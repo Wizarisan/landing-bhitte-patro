@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BhittePatro — The Clean Nepali Calendar</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  --radius: 14px;
+  --radius-lg: 22px;
+  --t: 0.22s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:        #000000;
+    --surface:   #1c1c1e;
+    --surface2:  #2c2c2e;
+    --surface3:  #3a3a3c;
+    --text:      #f5f5f7;
+    --text2:     #a1a1a6;
+    --text3:     #6e6e73;
+    --accent:    #ff375f;
+    --blue:      #0a84ff;
+    --yellow:    #ffd60a;
+    --green:     #30d158;
+    --divider:   rgba(255,255,255,0.08);
+    --border:    rgba(255,255,255,0.1);
+    --nav-bg:    rgba(0,0,0,0.78);
+    --shadow:    0 32px 80px rgba(0,0,0,0.85);
+    --cal-hdr:   #111111;
+    --warn-bg:   rgba(255,214,10,0.06);
+    --warn-bdr:  rgba(255,214,10,0.18);
+    --code-bg:   #2c2c2e;
+    --trow:      rgba(255,255,255,0.025);
+    --tbdr:      rgba(255,255,255,0.07);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg:        #f5f5f7;
+    --surface:   #ffffff;
+    --surface2:  #f0f0f2;
+    --surface3:  #e3e3e8;
+    --text:      #1d1d1f;
+    --text2:     #515154;
+    --text3:     #86868b;
+    --accent:    #ff2d55;
+    --blue:      #0071e3;
+    --yellow:    #f5a623;
+    --green:     #28a745;
+    --divider:   rgba(0,0,0,0.09);
+    --border:    rgba(0,0,0,0.11);
+    --nav-bg:    rgba(245,245,247,0.84);
+    --shadow:    0 16px 48px rgba(0,0,0,0.1);
+    --cal-hdr:   #f0f0f2;
+    --warn-bg:   rgba(245,166,35,0.07);
+    --warn-bdr:  rgba(245,166,35,0.22);
+    --code-bg:   #e8e8ed;
+    --trow:      rgba(0,0,0,0.025);
+    --tbdr:      rgba(0,0,0,0.07);
+  }
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg); color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 48px; padding: 0 28px;
+  background: var(--nav-bg);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--divider);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  font-size: 17px; font-weight: 600; letter-spacing: -0.3px;
+  color: var(--text); text-decoration: none;
+  display: flex; align-items: center; gap: 9px;
+}
+.logo-sq {
+  width: 26px; height: 26px; border-radius: 7px;
+  background: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: #fff;
+}
+.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links a {
+  font-size: 13px; font-weight: 400; color: var(--text2);
+  text-decoration: none; transition: color var(--t);
+}
+.nav-links a:hover, .nav-links a.active { color: var(--text); }
+.nav-cta {
+  font-size: 13px; font-weight: 500; color: #fff;
+  background: var(--blue); padding: 6px 18px;
+  border-radius: 980px; text-decoration: none;
+  transition: opacity var(--t);
+}
+.nav-cta:hover { opacity: 0.85; }
+
+/* PAGES */
+.page { display: none; padding-top: 48px; }
+.page.active { display: block; }
+
+/* HERO */
+.hero {
+  min-height: 100vh; padding: 90px 24px 72px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; position: relative; overflow: hidden;
+}
+.hero-glow {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,55,95,0.09) 0%, transparent 70%);
+  pointer-events: none;
+}
+.eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 18px;
+  opacity: 0; animation: up 0.65s 0.1s ease forwards;
+}
+.hero h1 {
+  font-size: clamp(48px, 8vw, 88px); font-weight: 700;
+  letter-spacing: -0.04em; line-height: 1.03; color: var(--text);
+  margin-bottom: 20px;
+  opacity: 0; animation: up 0.65s 0.2s ease forwards;
+}
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero-sub {
+  font-size: clamp(16px, 2vw, 20px); font-weight: 300;
+  color: var(--text2); max-width: 500px; line-height: 1.6;
+  margin-bottom: 38px;
+  opacity: 0; animation: up 0.65s 0.3s ease forwards;
+}
+.ctas {
+  display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+  margin-bottom: 64px;
+  opacity: 0; animation: up 0.65s 0.4s ease forwards;
+}
+.btn-fill {
+  font-size: 15px; font-weight: 500; color: #fff;
+  background: var(--blue); padding: 12px 26px;
+  border-radius: 980px; text-decoration: none; border: none; cursor: pointer;
+  transition: opacity var(--t);
+}
+.btn-fill:hover { opacity: 0.85; }
+.btn-ghost {
+  font-size: 15px; font-weight: 500; color: var(--blue);
+  padding: 12px 26px; border-radius: 980px; text-decoration: none;
+  border: 1.5px solid rgba(10,132,255,0.32);
+  transition: background var(--t);
+}
+.btn-ghost:hover { background: rgba(10,132,255,0.07); }
+
+/* CALENDAR MOCKUP */
+.cal-wrap {
+  width: min(375px, 92vw);
+  background: var(--surface); border-radius: var(--radius-lg);
+  border: 1px solid var(--border); overflow: hidden;
+  box-shadow: var(--shadow);
+  opacity: 0; animation: up 0.85s 0.5s ease forwards;
+}
+.cal-hdr {
+  background: var(--cal-hdr); padding: 15px 18px;
+  border-bottom: 1px solid var(--divider);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.cal-dots { display: flex; gap: 6px; }
+.dot { width: 11px; height: 11px; border-radius: 50%; }
+.dot.r { background: #ff5f57; } .dot.y { background: #ffbd2e; } .dot.g { background: #28c840; }
+.cal-nav { display: flex; align-items: center; gap: 6px; }
+.cal-nav span { font-size: 14px; font-weight: 600; color: var(--text); padding: 0 6px; }
+.cal-btn {
+  width: 26px; height: 26px; border-radius: 7px;
+  background: var(--surface2); border: none; cursor: pointer;
+  font-size: 13px; color: var(--text2);
+  display: flex; align-items: center; justify-content: center;
+}
+.today-pill {
+  font-size: 11px; font-weight: 600; color: var(--accent);
+  background: rgba(255,55,95,0.1); padding: 3px 9px; border-radius: 6px;
+}
+.cal-body { padding: 13px 13px 16px; }
+.day-labels { display: grid; grid-template-columns: repeat(7,1fr); margin-bottom: 5px; }
+.dl { text-align: center; font-size: 10px; font-weight: 600; color: var(--text3); letter-spacing: 0.04em; padding: 3px 0; }
+.dl.sat { color: var(--accent); }
+.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
+.cd {
+  aspect-ratio: 1; border-radius: 8px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: background 0.12s;
+}
+.cd:hover { background: var(--surface2); }
+.cd.today { background: var(--accent); }
+.cd.today .n, .cd.today .e { color: #fff; }
+.cd.sat .n { color: var(--accent); }
+.cd.hol .n { color: var(--accent); }
+.cd.faded { opacity: 0.22; }
+.cd .n { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1; }
+.cd .e { font-size: 9px; color: var(--text3); margin-top: 1px; line-height: 1; }
+.cal-foot {
+  padding: 10px 18px; border-top: 1px solid var(--divider);
+  background: var(--cal-hdr);
+  display: flex; justify-content: space-between;
+  font-size: 12px; color: var(--text2);
+}
+.cal-foot strong { color: var(--text); font-weight: 600; }
+
+/* SHARED */
+.wrap { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+.section { padding: 96px 0; }
+.hr { height: 1px; background: var(--divider); max-width: 900px; margin: 0 auto; }
+.sec-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+}
+.sec-title {
+  font-size: clamp(32px, 5vw, 52px); font-weight: 700;
+  letter-spacing: -0.04em; line-height: 1.08; color: var(--text); margin-bottom: 12px;
+}
+.sec-sub {
+  font-size: 17px; font-weight: 300; color: var(--text2);
+  max-width: 480px; line-height: 1.65; margin-bottom: 52px;
+}
+
+/* VS TABLE — plain, no color */
+.vs-wrap {
+  border: 1px solid var(--tbdr); border-radius: var(--radius);
+  overflow: hidden; margin-bottom: 72px;
+}
+.vs-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.vs-table thead tr { border-bottom: 1px solid var(--tbdr); }
+.vs-table thead th {
+  padding: 13px 20px; text-align: left;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.02em;
+  color: var(--text3); background: var(--surface);
+}
+.vs-table thead th:first-child { width: 32%; }
+.vs-table tbody tr { border-bottom: 1px solid var(--tbdr); }
+.vs-table tbody tr:last-child { border-bottom: none; }
+.vs-table tbody tr:nth-child(even) td { background: var(--trow); }
+.vs-table td {
+  padding: 13px 20px; color: var(--text2);
+  line-height: 1.5; vertical-align: middle;
+}
+.vs-table td:first-child { font-weight: 500; color: var(--text); font-size: 13px; }
+
+/* WHY LIST */
+.why-list { list-style: none; }
+.why-list li {
+  display: flex; gap: 0; padding: 22px 0;
+  border-bottom: 1px solid var(--divider);
+}
+.why-list li:last-child { border-bottom: none; }
+.why-num {
+  font-size: 11px; font-weight: 500; color: var(--text3);
+  width: 44px; flex-shrink: 0; padding-top: 3px; letter-spacing: 0.05em;
+}
+.why-t { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; color: var(--text); margin-bottom: 5px; }
+.why-d { font-size: 14px; font-weight: 300; color: var(--text2); line-height: 1.65; }
+
+/* DOWNLOAD EDITIONS */
+.dl-editions { display: flex; flex-direction: column; }
+.dl-edition {
+  padding: 28px 0; border-bottom: 1px solid var(--divider);
+  display: grid; grid-template-columns: 200px 1fr; gap: 28px;
+}
+.dl-edition:last-child { border-bottom: none; }
+.dl-name { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; color: var(--text); margin-bottom: 3px; }
+.dl-type { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; }
+.dl-acc { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; color: var(--text); }
+.dl-acc span { font-size: 13px; font-weight: 400; color: var(--text3); }
+.dl-avail { display: block; margin-top: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--green); }
+.dl-soon  { display: block; margin-top: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--yellow); }
+.dl-desc { font-size: 15px; font-weight: 300; color: var(--text2); line-height: 1.65; margin-bottom: 16px; max-width: 520px; }
+.dl-feat { list-style: none; margin-bottom: 20px; }
+.dl-feat li {
+  font-size: 14px; color: var(--text2); line-height: 1.55;
+  padding: 3px 0 3px 16px; position: relative;
+}
+.dl-feat li::before { content: "–"; position: absolute; left: 0; color: var(--text3); }
+.btn-dl {
+  font-size: 14px; font-weight: 600; color: #fff;
+  background: var(--blue); padding: 10px 24px;
+  border-radius: 9px; border: none; cursor: pointer;
+  text-decoration: none; display: inline-block; transition: opacity var(--t);
+}
+.btn-dl:hover { opacity: 0.85; }
+.btn-dis {
+  font-size: 14px; font-weight: 500;
+  background: var(--surface2); color: var(--text3);
+  padding: 10px 24px; border-radius: 9px; display: inline-block;
+}
+
+/* TROUBLESHOOT */
+.os-tabs {
+  display: flex; gap: 2px; padding: 3px;
+  background: var(--surface2); border-radius: 10px;
+  width: fit-content; margin: 0 auto 40px;
+}
+.os-tab {
+  font-size: 13px; font-weight: 500; padding: 7px 18px;
+  border-radius: 8px; border: none; cursor: pointer;
+  background: transparent; color: var(--text2); transition: all var(--t);
+}
+.os-tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.14); }
+.warn-box {
+  background: var(--warn-bg); border: 1px solid var(--warn-bdr);
+  border-radius: 10px; padding: 14px 18px; margin-bottom: 32px;
+  font-size: 14px; color: var(--text2); line-height: 1.65;
+}
+.step-list { list-style: none; }
+.step-list li {
+  display: flex; gap: 18px; align-items: flex-start;
+  padding: 20px 0; border-bottom: 1px solid var(--divider);
+}
+.step-list li:last-child { border-bottom: none; }
+.step-n { font-size: 11px; font-weight: 600; color: var(--text3); min-width: 22px; padding-top: 3px; flex-shrink: 0; letter-spacing: 0.04em; }
+.step-t { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 6px; letter-spacing: -0.01em; }
+.step-d { font-size: 14px; color: var(--text2); line-height: 1.65; }
+.step-d code {
+  font-family: "SF Mono", Menlo, monospace; font-size: 12.5px;
+  background: var(--code-bg); padding: 2px 7px; border-radius: 5px; color: var(--text);
+}
+.path {
+  display: inline-flex; align-items: center; gap: 3px; flex-wrap: wrap;
+  margin-top: 8px; font-size: 12px;
+  font-family: "SF Mono", Menlo, monospace;
+  background: var(--code-bg); color: var(--text);
+  padding: 4px 10px; border-radius: 6px;
+}
+.path .a { color: var(--text3); margin: 0 1px; }
+.help-box {
+  margin-top: 40px; padding: 28px 24px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); text-align: center;
+}
+.help-box h3 { font-size: 19px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.02em; }
+.help-box p { font-size: 14px; color: var(--text2); margin-bottom: 20px; line-height: 1.6; }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--divider);
+  padding: 36px 24px; max-width: 900px; margin: 0 auto;
+  display: flex; flex-wrap: wrap; gap: 20px;
+  align-items: center; justify-content: space-between;
+}
+.fc { font-size: 13px; color: var(--text3); line-height: 1.65; }
+.fc strong { color: var(--text2); }
+.fgh {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 14px; font-weight: 500; color: var(--text2);
+  text-decoration: none; padding: 9px 18px; border-radius: 10px;
+  background: var(--surface); border: 1px solid var(--border);
+  transition: all var(--t);
+}
+.fgh:hover { color: var(--text); border-color: var(--text3); transform: translateY(-2px); }
+.fgh svg { width: 17px; height: 17px; fill: currentColor; }
+
+@keyframes up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+  .dl-edition { grid-template-columns: 1fr; gap: 10px; }
+  .hero h1 { font-size: 40px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#" onclick="go('home');return false;">
+    <div class="logo-sq">भ</div>BhittePatro
+  </a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="go('home');return false;" id="n-home" class="active">Home</a></li>
+    <li><a href="#" onclick="go('download');return false;" id="n-download">Download</a></li>
+    <li><a href="#" onclick="go('troubleshoot');return false;" id="n-troubleshoot">Troubleshoot</a></li>
+  </ul>
+  <a class="nav-cta" href="#" onclick="go('download');return false;">Download Free</a>
+</nav>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <p class="eyebrow">Nepali Calendar · Reimagined</p>
+    <h1>The patro you<br>actually <em>want</em> to use.</h1>
+    <p class="hero-sub">Fast. Private. No ads. No noise.<br>Just your calendar, exactly as it should be.</p>
+    <div class="ctas">
+      <a class="btn-fill" href="#" onclick="go('download');return false;">Download Free</a>
+      <a class="btn-ghost" href="#why">Why BhittePatro?</a>
+    </div>
+    <div class="cal-wrap">
+      <div class="cal-hdr">
+        <div class="cal-dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="cal-nav">
+          <button class="cal-btn">&#8249;</button>
+          <span>चैत &thinsp;२०८२</span>
+          <button class="cal-btn">&#8250;</button>
+        </div>
+        <div class="today-pill">आज</div>
+      </div>
+      <div class="cal-body">
+        <div class="day-labels">
+          <div class="dl">आइत</div><div class="dl">सोम</div><div class="dl">मंगल</div>
+          <div class="dl">बुध</div><div class="dl">बिही</div><div class="dl">शुक्र</div><div class="dl sat">शनि</div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+      <div class="cal-foot"><span>चैत ५, २०८२</span><strong>पूर्णिमा / औंसी</strong></div>
+    </div>
+  </section>
+
+  <div id="why"></div>
+  <div class="hr"></div>
+
+  <section class="section">
+    <div class="wrap">
+      <p class="sec-label">The Honest Truth</p>
+      <h2 class="sec-title">Every other patro<br>has a problem.</h2>
+      <p class="sec-sub">Here is what is wrong with the alternatives — and how BhittePatro fixes each one.</p>
+
+      <div class="vs-wrap">
+        <table class="vs-table">
+          <thead>
+            <tr>
+              <th>Issue</th>
+              <th>Hamro Patro &amp; Nepali Patro</th>
+              <th>BhittePatro</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Ads</td><td>Aggressive, full-screen ads throughout the app</td><td>Zero ads. Ever.</td></tr>
+            <tr><td>News Feed</td><td>News articles crammed into what should be a calendar</td><td>Just the calendar. Nothing you did not ask for.</td></tr>
+            <tr><td>Stability</td><td>Ships bugs that go unfixed for weeks</td><td>Open source — report a bug, see it fixed</td></tr>
+            <tr><td>Privacy</td><td>Silent data collection and third-party trackers in the background</td><td>No network calls, no analytics, no telemetry</td></tr>
+            <tr><td>Speed</td><td>Heavy app size, slow launch, bloat you never wanted</td><td>Under 5 MB, opens in under 100 ms</td></tr>
+            <tr><td>Design</td><td>Other patros have a UI from the Windows XP era</td><td>Native macOS design, feels like it belongs</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="sec-label">Why Choose BhittePatro</p>
+      <h2 class="sec-title" style="margin-bottom:40px;">Six reasons to switch.</h2>
+      <ul class="why-list">
+        <li><span class="why-num">01</span><div><div class="why-t">Instant</div><div class="why-d">Opens in under 100 ms. No splash screen, no loading spinner. Your calendar is just there the moment you click.</div></div></li>
+        <li><span class="why-num">02</span><div><div class="why-t">Zero Ads</div><div class="why-d">Not "fewer ads." Not "premium removes ads." Zero ads in every edition, forever. That is the entire deal.</div></div></li>
+        <li><span class="why-num">03</span><div><div class="why-t">Your Data Stays Yours</div><div class="why-d">No analytics SDK, no ad trackers, no silent background requests. The app does exactly what you can read in the source code.</div></div></li>
+        <li><span class="why-num">04</span><div><div class="why-t">Just the Calendar</div><div class="why-d">Tithi, festivals, public holidays. That is it. No news feed, no horoscope spam, no content you did not open the app for.</div></div></li>
+        <li><span class="why-num">05</span><div><div class="why-t">Reliable Dates</div><div class="why-d">Data sourced and cross-verified. The Online edition syncs live for 100% accuracy. What you see is correct.</div></div></li>
+        <li><span class="why-num">06</span><div><div class="why-t">Open Source</div><div class="why-d">Community maintained. Every line of code is readable. No hidden surprises, no black-box behavior.</div></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="hr"></div>
+  <section style="padding:80px 24px;text-align:center;">
+    <h2 style="font-size:clamp(28px,5vw,48px);font-weight:700;letter-spacing:-0.04em;color:var(--text);margin-bottom:14px;line-height:1.1;">A patro that respects you.<br>Free. Always.</h2>
+    <p style="font-size:16px;color:var(--text2);font-weight:300;margin-bottom:32px;">No subscription. No upsell. Pick the edition that fits you.</p>
+    <a class="btn-fill" href="#" onclick="go('download');return false;" style="font-size:16px;padding:14px 32px;">See All Downloads</a>
+  </section>
+
+  <footer>
+    <div class="fc"><strong>BhittePatro</strong> — A clean, open Nepali calendar for macOS<br>Made with care by the community &middot; Free forever</div>
+    <a class="fgh" href="https://github.com" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>Contribute on GitHub</a>
+  </footer>
+</div>
+
+<!-- DOWNLOAD -->
+<div id="page-download" class="page">
+  <section class="section">
+    <div class="wrap">
+      <p class="sec-label">Download</p>
+      <h1 class="sec-title">Three editions.<br>All free.</h1>
+      <p class="sec-sub">Start with Basic. Upgrade anytime. No account or sign-in needed.</p>
+      <div class="warn-box"><strong>Heads up:</strong> Online and AI editions arrive in approximately one week. Basic is available now. If macOS blocks the app, see the <a href="#" onclick="go('troubleshoot');return false;" style="color:var(--blue);text-decoration:none;">Troubleshoot</a> page for a quick fix.</div>
+
+      <div class="dl-editions">
+        <div class="dl-edition">
+          <div>
+            <div class="dl-name">Basic</div>
+            <div class="dl-type">Offline</div>
+            <div class="dl-acc">97% <span>accurate</span></div>
+            <span class="dl-avail">Available Now</span>
+          </div>
+          <div>
+            <div class="dl-desc">Works entirely offline — no internet ever required. Full BS calendar with tithis and festivals. Static data; may occasionally miss last-minute festival date corrections.</div>
+            <ul class="dl-feat">
+              <li>Full Bikram Sambat calendar</li>
+              <li>Tithis, festivals, and public holidays</li>
+              <li>Works with no internet connection</li>
+              <li>Zero ads, zero tracking</li>
+              <li>May miss rare last-minute date corrections</li>
+            </ul>
+            <a class="btn-dl" href="#">Download Basic</a>
+          </div>
+        </div>
+
+        <div class="dl-edition">
+          <div>
+            <div class="dl-name">Online</div>
+            <div class="dl-type">Recommended</div>
+            <div class="dl-acc">100% <span>accurate</span></div>
+            <span class="dl-soon">Coming in ~1 week</span>
+          </div>
+          <div>
+            <div class="dl-desc">Everything in Basic, plus live sync from verified sources. Real-time corrections so dates are always right. The internet is only used for calendar data — nothing else.</div>
+            <ul class="dl-feat">
+              <li>Everything in Basic</li>
+              <li>Live sync from verified data sources</li>
+              <li>Real-time tithi and festival corrections</li>
+              <li>Lightweight — no extra background activity</li>
+            </ul>
+            <span class="btn-dis">Coming Soon</span>
+          </div>
+        </div>
+
+        <div class="dl-edition">
+          <div>
+            <div class="dl-name">AI</div>
+            <div class="dl-type">Ask anything</div>
+            <div class="dl-acc">100% <span>+ AI</span></div>
+            <span class="dl-soon">Coming in ~1 week</span>
+          </div>
+          <div>
+            <div class="dl-desc">Everything in Online, plus a dedicated on-device AI model. Ask questions like "When is Dashain?" or "What does this festival mean?" Requires more disk space; use Basic or Online if storage is limited.</div>
+            <ul class="dl-feat">
+              <li>Everything in Online</li>
+              <li>Dedicated on-device AI model</li>
+              <li>Ask natural questions about holidays and festivals</li>
+              <li>Explains the meaning and traditions of each holiday</li>
+              <li>Requires more disk space than other editions</li>
+            </ul>
+            <span class="btn-dis">Coming Soon</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <div class="fc"><strong>BhittePatro</strong> — A clean, open Nepali calendar for macOS<br>Made with care by the community &middot; Free forever</div>
+    <a class="fgh" href="https://github.com" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>Contribute on GitHub</a>
+  </footer>
+</div>
+
+<!-- TROUBLESHOOT -->
+<div id="page-troubleshoot" class="page">
+  <section class="section">
+    <div class="wrap">
+      <p class="sec-label">Troubleshooting</p>
+      <h1 class="sec-title">"Apple can't verify<br>this app."</h1>
+      <p class="sec-sub" style="margin-bottom:36px;">BhittePatro is not on the Mac App Store yet, so macOS blocks it by default. It is a one-time, two-minute fix.</p>
+
+      <div class="os-tabs">
+        <button class="os-tab active" onclick="switchOS('sequoia',this)">macOS Sequoia 15</button>
+        <button class="os-tab" onclick="switchOS('tahoe',this)">macOS Tahoe 26</button>
+      </div>
+
+      <div class="warn-box">This is a <strong>one-time process</strong>. Once you allow BhittePatro, it opens normally on every subsequent launch. macOS is cautious because the app is not signed with a paid Apple Developer certificate — the app itself is open source and safe to inspect.</div>
+
+      <!-- SEQUOIA -->
+      <div id="steps-sequoia">
+        <ul class="step-list">
+          <li><span class="step-n">01</span><div><div class="step-t">Attempt to open BhittePatro</div><div class="step-d">Double-click <code>BhittePatro.app</code> in Finder. macOS shows: <em>"Apple could not verify 'BhittePatro' is free of malware."</em> Click <strong>Done</strong>. Do not move it to Trash.</div></div></li>
+          <li><span class="step-n">02</span><div><div class="step-t">Open System Settings</div><div class="step-d">Click the Apple logo in the top-left menu bar, then select <strong>System Settings...</strong></div></div></li>
+          <li><span class="step-n">03</span><div><div class="step-t">Go to Privacy &amp; Security</div><div class="step-d">In the left sidebar, click <strong>Privacy &amp; Security</strong>.<div class="path">Apple Menu <span class="a">›</span> System Settings <span class="a">›</span> Privacy &amp; Security</div></div></div></li>
+          <li><span class="step-n">04</span><div><div class="step-t">Find the blocked app notice</div><div class="step-d">Scroll to the <strong>Security</strong> heading at the bottom of the panel. Look for: <em>"'BhittePatro' was blocked to protect your Mac."</em> Click <strong>Open Anyway</strong> next to it.</div></div></li>
+          <li><span class="step-n">05</span><div><div class="step-t">Authenticate</div><div class="step-d">A confirmation dialog appears. Click <strong>Open Anyway</strong> again. macOS will ask for your <strong>admin password</strong> or <strong>Touch ID</strong>. Provide it to proceed.</div></div></li>
+          <li><span class="step-n">06</span><div><div class="step-t">BhittePatro opens — you are done</div><div class="step-d">The app launches normally. From this point on, double-clicking opens it with no warnings. These steps will not be needed again.</div></div></li>
+        </ul>
+      </div>
+
+      <!-- TAHOE -->
+      <div id="steps-tahoe" style="display:none;">
+        <div class="warn-box" style="margin-bottom:24px;">In macOS Tahoe 26, the right-click "Open" workaround no longer bypasses Gatekeeper. You must use the Privacy &amp; Security settings path below.</div>
+        <ul class="step-list">
+          <li><span class="step-n">01</span><div><div class="step-t">Attempt to open BhittePatro</div><div class="step-d">Double-click <code>BhittePatro.app</code> in Finder. Tahoe shows: <em>"Apple could not verify 'BhittePatro' is free of malware that may harm your Mac or compromise your privacy."</em> Click <strong>Done</strong>. Do not move it to Trash.</div></div></li>
+          <li><span class="step-n">02</span><div><div class="step-t">Open System Settings</div><div class="step-d">Click the Apple logo in the top-left menu bar and choose <strong>System Settings...</strong></div></div></li>
+          <li><span class="step-n">03</span><div><div class="step-t">Go to Privacy &amp; Security</div><div class="step-d">In the left sidebar, click <strong>Privacy &amp; Security</strong>.<div class="path">Apple Menu <span class="a">›</span> System Settings <span class="a">›</span> Privacy &amp; Security</div></div></div></li>
+          <li><span class="step-n">04</span><div><div class="step-t">Find the blocked app notice</div><div class="step-d">Scroll down to the <strong>Security</strong> section at the bottom. You will see: <em>"'BhittePatro' was blocked to protect your Mac."</em> Click <strong>Open Anyway</strong> directly next to that message.</div></div></li>
+          <li><span class="step-n">05</span><div><div class="step-t">Confirm in the second dialog</div><div class="step-d">A new warning dialog appears with the text <em>"Apple is not able to verify that it is free from malware."</em> Click <strong>Open Anyway</strong> once more.</div></div></li>
+          <li><span class="step-n">06</span><div><div class="step-t">Enter your administrator password</div><div class="step-d">macOS will prompt: <em>"You are attempting to open an app that may cause harm to your Mac."</em> Enter your <strong>admin username and password</strong> and click <strong>OK</strong>. Touch ID is not available at this step on Tahoe.</div></div></li>
+          <li><span class="step-n">07</span><div><div class="step-t">BhittePatro opens — you are done</div><div class="step-d">The app launches. Future launches are a normal double-click with no warnings. These steps will not be needed again.</div></div></li>
+        </ul>
+      </div>
+
+      <div class="help-box">
+        <h3>Still stuck?</h3>
+        <p>Open a GitHub issue and the community will help. Most issues get a reply within a few hours.</p>
+        <a href="https://github.com" target="_blank" class="btn-dl" style="font-size:15px;padding:11px 26px;">Open a GitHub Issue</a>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <div class="fc"><strong>BhittePatro</strong> — A clean, open Nepali calendar for macOS<br>Made with care by the community &middot; Free forever</div>
+    <a class="fgh" href="https://github.com" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>Contribute on GitHub</a>
+  </footer>
+</div>
+
+<script>
+function go(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const el = document.getElementById('n-' + name);
+  if (el) el.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  return false;
+}
+function switchOS(os, el) {
+  document.querySelectorAll('.os-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('steps-sequoia').style.display = os === 'sequoia' ? '' : 'none';
+  document.getElementById('steps-tahoe').style.display   = os === 'tahoe'   ? '' : 'none';
+}
+
+// Calendar — Chaitra 2082 starts on Sunday (col 0)
+// s values: 'sun'=Sunday red, 'sat'=Saturday red, 'today'=today highlight, 'hol'=holiday red, 'faded'=next month
+const calRows = [
+  [{n:'१',e:'15',s:''},{n:'२',e:'16',s:''},{n:'३',e:'17',s:''},{n:'४',e:'18',s:'hol'},{n:'५',e:'19',s:'today'},{n:'६',e:'20',s:''},{n:'७',e:'21',s:'sat'}],
+  [{n:'८',e:'22',s:''},{n:'९',e:'23',s:''},{n:'१०',e:'24',s:''},{n:'११',e:'25',s:''},{n:'१२',e:'26',s:''},{n:'१३',e:'27',s:'hol'},{n:'१४',e:'28',s:'sat'}],
+  [{n:'१५',e:'29',s:''},{n:'१६',e:'30',s:''},{n:'१७',e:'31',s:''},{n:'१८',e:'1',s:''},{n:'१९',e:'2',s:''},{n:'२०',e:'3',s:''},{n:'२१',e:'4',s:'sat'}],
+  [{n:'२२',e:'5',s:''},{n:'२३',e:'6',s:''},{n:'२४',e:'7',s:''},{n:'२५',e:'8',s:''},{n:'२६',e:'9',s:''},{n:'२७',e:'10',s:''},{n:'२८',e:'11',s:'sat'}],
+  [{n:'२९',e:'12',s:''},{n:'३०',e:'13',s:''},{n:'',e:'',s:'faded'},{n:'',e:'',s:'faded'},{n:'',e:'',s:'faded'},{n:'',e:'',s:'faded'},{n:'',e:'',s:'faded'}],
+];
+const grid = document.getElementById('calGrid');
+calRows.forEach(row => row.forEach(d => {
+  const cell = document.createElement('div');
+  // today overrides everything visually; sat/hol/sun just color the number
+  cell.className = 'cd' + (d.s ? ' ' + d.s : '');
+  if (d.n) cell.innerHTML = `<span class="n">${d.n}</span><span class="e">${d.e}</span>`;
+  grid.appendChild(cell);
+}));
+</script>
+</body>
+</html>
