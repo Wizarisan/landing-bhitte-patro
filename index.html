@@ -117,7 +117,7 @@ nav {
   display: flex; align-items: center; justify-content: center;
   font-size: 13px; font-weight: 700; color: #fff;
 }
-.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links { margin-left: 10px;  display: flex; gap: 24px; list-style: none; }
 .nav-links a {
   font-size: 13px; font-weight: 400; color: var(--text2);
   text-decoration: none; transition: color var(--t);
@@ -150,6 +150,84 @@ nav {
   transition: opacity var(--t);
 }
 .nav-cta:hover { opacity: 0.85; }
+
+/* Mobile Menu Button */
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 1001;
+}
+.menu-toggle span {
+  width: 20px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all var(--t);
+}
+.menu-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+.menu-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Mobile Menu Panel */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--surface);
+  z-index: 1000;
+  padding: 24px;
+  flex-direction: column;
+  gap: 8px;
+  transform: translateX(100%);
+  transition: transform var(--t);
+}
+.mobile-menu.active {
+  transform: translateX(0);
+}
+.mobile-menu a {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+  padding: 16px 12px;
+  border-radius: 10px;
+  transition: background var(--t);
+}
+.mobile-menu a:hover {
+  background: var(--surface2);
+}
+.mobile-menu .theme-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 12px;
+  margin-top: 16px;
+  border-top: 1px solid var(--divider);
+}
+.mobile-menu .theme-row span {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+}
+.mobile-menu .theme-toggle {
+  background: var(--surface2);
+  padding: 8px 12px;
+  border-radius: 8px;
+}
 
 /* PAGES */
 .page { display: none; padding-top: 48px; }
@@ -418,6 +496,9 @@ footer {
 
 @media (max-width: 640px) {
   .nav-links { display: none; }
+  .nav-right .theme-toggle, .nav-right .nav-cta { display: none; }
+  .menu-toggle { display: flex; }
+  .mobile-menu { display: flex; }
   .dl-edition { grid-template-columns: 1fr; gap: 10px; }
   .hero h1 { font-size: 40px; }
 }
@@ -447,8 +528,28 @@ footer {
       <svg class="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     </button>
     <a class="nav-cta" href="#" onclick="go('download');return false;">Download Free</a>
+    <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
 </nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" onclick="go('home');toggleMenu();return false;">Home</a>
+  <a href="#" onclick="go('download');toggleMenu();return false;">Download</a>
+  <a href="#" onclick="go('troubleshoot');toggleMenu();return false;">Troubleshoot</a>
+  <a href="https://github.com/Wizarisan/bhitte-patro" id="m-contribute">Contribute</a>
+  <div class="theme-row">
+    <span>Theme</span>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+      <svg class="sun-icon" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 000-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
+      <svg class="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</div>
 
 <!-- HOME -->
 <div id="page-home" class="page active">
@@ -691,6 +792,14 @@ function toggleTheme() {
 
   document.documentElement.setAttribute('data-theme', target);
   localStorage.setItem('theme', target);
+}
+
+function toggleMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const toggle = document.querySelector('.menu-toggle');
+  menu.classList.toggle('active');
+  toggle.classList.toggle('active');
+  document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
 }
 
 function switchOS(os, el) {
