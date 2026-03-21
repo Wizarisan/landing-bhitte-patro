@@ -309,8 +309,8 @@ nav {
   display: flex; align-items: center; justify-content: center;
 }
 .today-pill {
-  font-size: 11px; font-weight: 600; color: var(--accent);
-  background: rgba(255,55,95,0.1); padding: 3px 9px; border-radius: 6px;
+  font-size: 11px; font-weight: 600; color: #fff;
+  background: var(--accent); padding: 4px 12px; border-radius: 980px;
 }
 .cal-body { padding: 13px 13px 16px; }
 .day-labels { display: grid; grid-template-columns: repeat(7,1fr); margin-bottom: 5px; }
@@ -337,6 +337,138 @@ nav {
   font-size: 12px; color: var(--text2);
 }
 .cal-foot strong { color: var(--text); font-weight: 600; }
+
+/* WIDGET - CSS-only Nepali Calendar Widget */
+.widget-container {
+  width: 320px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.widget-header {
+  padding: 16px 18px 12px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.widget-month-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.widget-month-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+.widget-month-year {
+  font-size: 14px;
+  color: var(--text3);
+  font-weight: 500;
+}
+.widget-today-btn {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--accent);
+  padding: 5px 12px;
+  border-radius: 980px;
+}
+.widget-body {
+  padding: 14px;
+}
+.widget-day-labels {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 6px;
+}
+.widget-dl {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text3);
+  letter-spacing: 0.04em;
+  padding: 6px 0;
+}
+.widget-dl.sat { color: var(--accent); }
+.widget-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.widget-cell {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  transition: background 0.12s;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  padding: 2px 0;
+}
+.widget-cell:hover { background: var(--surface2); }
+.widget-cell.today {
+  background: var(--accent);
+  color: #fff;
+}
+.widget-cell.sat, .widget-cell.hol {
+  color: var(--accent);
+}
+.widget-cell.today.sat, .widget-cell.today.hol {
+  color: #fff;
+}
+.widget-cell.faded { opacity: 0.2; }
+.widget-footer {
+  padding: 12px 18px;
+  border-top: 1px solid var(--divider);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.widget-footer-date {
+  font-size: 11px;
+  color: var(--text3);
+  font-weight: 500;
+}
+.widget-footer-tithi {
+  font-size: 11px;
+  color: var(--text3);
+}
+
+/* Widget Icon - Compact Today View */
+.widget-icon {
+  width: 180px;
+  height: 180px;
+  border-radius: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.widget-icon-date {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+.widget-icon-tithi {
+  font-size: 13px;
+  color: var(--text3);
+  font-weight: 400;
+}
 
 /* SHARED */
 .wrap { max-width: 900px; margin: 0 auto; padding: 0 24px; }
@@ -514,10 +646,11 @@ footer {
 
 <nav>
   <a class="nav-logo" href="#" onclick="go('home');return false;">
-      <div class="logo-sq"><img src="./icon-ios-1024x1024.png" height="64" width="64" alt="logo"> </div>BhittePatro
+      <div class="logo-sq">ब</div>BhittePatro
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="go('home');return false;" id="n-home" class="active">Home</a></li>
+    <li><a href="#" onclick="go('features');return false;" id="n-features">Features</a></li>
     <li><a href="#" onclick="go('download');return false;" id="n-download">Download</a></li>
     <li><a href="#" onclick="go('troubleshoot');return false;" id="n-troubleshoot">Troubleshoot</a></li>
     <li><a href="https://github.com/Wizarisan/bhitte-patro" id="n-contribute">Contribute</a></li>
@@ -539,6 +672,7 @@ footer {
 <!-- Mobile Menu -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="#" onclick="go('home');toggleMenu();return false;">Home</a>
+  <a href="#" onclick="go('features');toggleMenu();return false;">Features</a>
   <a href="#" onclick="go('download');toggleMenu();return false;">Download</a>
   <a href="#" onclick="go('troubleshoot');toggleMenu();return false;">Troubleshoot</a>
   <a href="https://github.com/Wizarisan/bhitte-patro" id="m-contribute">Contribute</a>
@@ -561,24 +695,30 @@ footer {
       <a class="btn-fill" href="#" onclick="go('download');return false;">Download Free</a>
       <a class="btn-ghost" href="#why">Why BhittePatro?</a>
     </div>
-    <div class="cal-wrap">
-      <div class="cal-hdr">
-        <div class="cal-dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
-        <div class="cal-nav">
-          <button class="cal-btn">&#8249;</button>
-          <span>चैत &thinsp;२०८२</span>
-          <button class="cal-btn">&#8250;</button>
+    <!-- Calendar Widget -->
+    <div class="widget-container">
+      <div class="widget-header">
+        <div class="widget-month-group">
+          <span class="widget-month-name">चैत</span>
+          <span class="widget-month-year">२०८२</span>
         </div>
-        <div class="today-pill">आज</div>
+        <div class="widget-today-btn">आज: ७</div>
       </div>
-      <div class="cal-body">
-        <div class="day-labels">
-          <div class="dl">आइत</div><div class="dl">सोम</div><div class="dl">मंगल</div>
-          <div class="dl">बुध</div><div class="dl">बिही</div><div class="dl">शुक्र</div><div class="dl sat">शनि</div>
+      <div class="widget-body">
+        <div class="widget-day-labels">
+          <span class="widget-dl" style="color: var(--accent);">आइत</span>
+          <span class="widget-dl">सोम</span>
+          <span class="widget-dl">मंगल</span>
+          <span class="widget-dl">बुध</span>
+          <span class="widget-dl">बिही</span>
+          <span class="widget-dl">शुक्र</span>
+          <span class="widget-dl" style="color: var(--accent);">शनि</span>
         </div>
-        <div class="cal-grid" id="calGrid"></div>
+        <div class="widget-grid" id="widgetGrid"></div>
       </div>
-      <div class="cal-foot"><span>चैत ५, २०८२</span><strong>पूर्णिमा / औंसी</strong></div>
+      <div class="widget-footer">
+        <span class="widget-footer-tithi">तृतीया</span>
+      </div>
     </div>
   </section>
 
@@ -632,6 +772,140 @@ footer {
   </section>
 
   <footer>
+    <div class="fc"><strong>BhittePatro</strong> — A clean, open Nepali calendar for macOS<br>Made with care by the community &middot; Free forever</div>
+    <a class="fgh" href="https://github.com/PranabZz/bhitte-patro" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>Contribute on GitHub</a>
+  </footer>
+</div>
+
+<!-- FEATURES -->
+<div id="page-features" class="page">
+  <section class="section">
+    <div class="wrap">
+      <p class="sec-label">Features</p>
+      <h1 class="sec-title">Everything you need.<br>Nothing you don't.</h1>
+      <p class="sec-sub">Clean design. Powerful features. Zero bloat.</p>
+
+      <!-- Menu Bar App Section -->
+      <div style="margin-bottom: 80px;">
+        <h2 style="font-size: 24px; font-weight: 600; color: var(--text); margin-bottom: 12px; letter-spacing: -0.02em;">Menu Bar Calendar</h2>
+        <p style="font-size: 15px; color: var(--text2); margin-bottom: 40px; line-height: 1.6;">Your Nepali calendar, one click away. Right in your menu bar.</p>
+        
+        <div style="display: flex; gap: 60px; justify-content: center; align-items: flex-start; flex-wrap: wrap;">
+          <!-- Menu Bar Mockup with Toggle -->
+          <div style="background: var(--surface); border-radius: 16px; border: 1px solid var(--border); padding: 14px; box-shadow: var(--shadow); min-width: 320px;">
+            <!-- View Toggle -->
+            <div style="display: flex; gap: 8px; margin-bottom: 14px; padding: 0 4px;">
+              <button class="view-toggle active" onclick="toggleView('today')" style="flex: 1; font-size: 12px; font-weight: 600; color: #fff; background: var(--accent); padding: 6px 14px; border-radius: 980px; border: none; cursor: pointer; transition: all 0.2s;">आज</button>
+              <button class="view-toggle" onclick="toggleView('calendar')" style="flex: 1; font-size: 12px; font-weight: 600; color: var(--text2); background: var(--surface2); padding: 6px 14px; border-radius: 980px; border: none; cursor: pointer; transition: all 0.2s;">क्यालेन्डर</button>
+            </div>
+            
+            <!-- Today View -->
+            <div id="menubarToday" style="padding: 40px 16px; text-align: center;">
+              <div style="font-size: 72px; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 8px;">६</div>
+              <div style="font-size: 15px; color: var(--text3); margin-bottom: 12px;">असोज २०६२</div>
+              <div style="font-size: 13px; color: var(--text2);"><span style="color: var(--accent);">दर्श विदा</span> · अष्टमी</div>
+            </div>
+            
+            <!-- Calendar View (hidden by default) -->
+            <div id="menubarCalendar" style="display: none;">
+              <!-- Header with Navigation -->
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 0 4px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <button style="width: 28px; height: 28px; border-radius: 8px; background: var(--surface2); border: none; color: var(--accent); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center;">‹</button>
+                  <div style="display: flex; align-items: center; gap: 4px;">
+                    <span style="font-size: 14px; font-weight: 600; color: var(--text); cursor: pointer;">असोज</span>
+                    <svg style="width: 12px; height: 12px; fill: var(--text3);" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 4px;">
+                    <span style="font-size: 14px; font-weight: 600; color: var(--text); cursor: pointer;">२०६२</span>
+                    <svg style="width: 12px; height: 12px; fill: var(--text3);" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                  </div>
+                  <button style="width: 28px; height: 28px; border-radius: 8px; background: var(--surface2); border: none; color: var(--accent); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center;">›</button>
+                </div>
+                <button style="width: 32px; height: 32px; border-radius: 10px; background: var(--surface2); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                  <svg style="width: 18px; height: 18px; fill: var(--text3);" viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
+                </button>
+              </div>
+              
+              <!-- Calendar Grid -->
+              <div class="widget-container" style="width: 300px; border: none; box-shadow: none; background: transparent;">
+                <div class="widget-body" style="padding: 0;">
+                  <div class="widget-day-labels">
+                    <span class="widget-dl" style="color: var(--accent);">आइत</span>
+                    <span class="widget-dl">सोम</span>
+                    <span class="widget-dl">मंगल</span>
+                    <span class="widget-dl">बुध</span>
+                    <span class="widget-dl">बिही</span>
+                    <span class="widget-dl">शुक्र</span>
+                    <span class="widget-dl" style="color: var(--accent);">शनि</span>
+                  </div>
+                  <div class="widget-grid" id="menuBarWidgetGrid" style="grid-template-columns: repeat(7, 1fr); gap: 4px;"></div>
+                </div>
+                <!-- Footer -->
+                <div class="widget-footer" style="padding: 12px 4px 4px; border-top: 1px solid var(--divider); text-align: left; display: flex; flex-direction: column; gap: 4px;">
+                  <span class="widget-footer-date" style="font-size: 11px; color: var(--text3);">असोज ६, २०६२</span>
+                  <span class="widget-footer-tithi" style="font-size: 11px;"><span style="color: var(--accent);">दर्श विदा</span> अष्टमी</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Features List -->
+          <div style="display: flex; flex-direction: column; gap: 16px; justify-content: center; max-width: 300px;">
+            <div style="padding: 16px; background: var(--surface); border-radius: 12px; border: 1px solid var(--border);">
+              <div style="font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px;">Today View</div>
+              <div style="font-size: 14px; color: var(--text2); line-height: 1.5;">Clean, focused view of today's date and tithi.</div>
+            </div>
+            <div style="padding: 16px; background: var(--surface); border-radius: 12px; border: 1px solid var(--border);">
+              <div style="font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px;">Calendar View</div>
+              <div style="font-size: 14px; color: var(--text2); line-height: 1.5;">Full month with navigation and dual dates.</div>
+            </div>
+            <div style="padding: 16px; background: var(--surface); border-radius: 12px; border: 1px solid var(--border);">
+              <div style="font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px;">Light & Dark Mode</div>
+              <div style="font-size: 14px; color: var(--text2); line-height: 1.5;">Automatically adapts to your system theme.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hr" style="margin: 80px auto;"></div>
+
+      <!-- Desktop Widget Feature -->
+      <div style="margin: 80px 0; text-align: center;">
+        <h2 style="font-size: 24px; font-weight: 600; color: var(--text); margin-bottom: 12px; letter-spacing: -0.02em;">Desktop Widget</h2>
+        <p style="font-size: 15px; color: var(--text2); margin-bottom: 40px; line-height: 1.6;">Beautiful calendar on your desktop. Always visible, always useful.</p>
+        
+        <div style="display: flex; justify-content: center; margin-top: 40px;">
+          <div class="widget-container" style="width: 320px;">
+            <div class="widget-header">
+              <div class="widget-month-group">
+                <span class="widget-month-name">चैत</span>
+                <span class="widget-month-year">२०८२</span>
+              </div>
+              <div class="widget-today-btn">आज: ७</div>
+            </div>
+            <div class="widget-body">
+              <div class="widget-day-labels">
+                <span class="widget-dl" style="color: var(--accent);">आइत</span>
+                <span class="widget-dl">सोम</span>
+                <span class="widget-dl">मंगल</span>
+                <span class="widget-dl">बुध</span>
+                <span class="widget-dl">बिही</span>
+                <span class="widget-dl">शुक्र</span>
+                <span class="widget-dl" style="color: var(--accent);">शनि</span>
+              </div>
+              <div class="widget-grid" id="desktopWidgetGrid"></div>
+            </div>
+            <div class="widget-footer">
+              <span class="widget-footer-date">चैत ७, २०८२</span>
+              <span class="widget-footer-tithi">तृतीया</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+<footer>
     <div class="fc"><strong>BhittePatro</strong> — A clean, open Nepali calendar for macOS<br>Made with care by the community &middot; Free forever</div>
     <a class="fgh" href="https://github.com/PranabZz/bhitte-patro" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>Contribute on GitHub</a>
   </footer>
@@ -810,22 +1084,62 @@ function switchOS(os, el) {
 }
 
 // Calendar — Chaitra 2082 starts on Sunday (col 0)
-// s values: 'sun'=Sunday red, 'sat'=Saturday red, 'today'=today highlight, 'hol'=holiday red, 'faded'=next month
-const calRows = [
-  [{n:'१',e:'15',s:''},{n:'२',e:'16',s:''},{n:'३',e:'17',s:''},{n:'४',e:'18',s:'hol'},{n:'५',e:'19',s:'today'},{n:'६',e:'20',s:''},{n:'७',e:'21',s:'sat'}],
-  [{n:'८',e:'22',s:''},{n:'९',e:'23',s:''},{n:'१०',e:'24',s:''},{n:'११',e:'25',s:''},{n:'१२',e:'26',s:''},{n:'१३',e:'27',s:'hol'},{n:'१४',e:'28',s:'sat'}],
-  [{n:'१५',e:'29',s:''},{n:'१६',e:'30',s:''},{n:'१७',e:'31',s:''},{n:'१८',e:'1',s:''},{n:'१९',e:'2',s:''},{n:'२०',e:'3',s:''},{n:'२१',e:'4',s:'sat'}],
-  [{n:'२२',e:'5',s:''},{n:'२३',e:'6',s:''},{n:'२४',e:'7',s:''},{n:'२५',e:'8',s:''},{n:'२६',e:'9',s:''},{n:'२७',e:'10',s:''},{n:'२८',e:'11',s:'sat'}],
-  [{n:'२९',e:'12',s:''},{n:'३०',e:'13',s:''},{n:'',e:'',s:'faded'},{n:'',e:'',s:'faded'},{n:'',e:'',s:'faded'},{n:'',e:'',s:'faded'},{n:'',e:'',s:'faded'}],
+// Widget Grid - Nepali dates only (matching screenshot design)
+const widgetRows = [
+  [{np:'१',en:'15',s:''},{np:'२',en:'16',s:''},{np:'३',en:'17',s:''},{np:'४',en:'18',s:'hol'},{np:'५',en:'19',s:''},{np:'६',en:'20',s:''},{np:'७',en:'21',s:'today'}],
+  [{np:'८',en:'22',s:''},{np:'९',en:'23',s:''},{np:'१०',en:'24',s:''},{np:'११',en:'25',s:''},{np:'१२',en:'26',s:''},{np:'१३',en:'27',s:'hol'},{np:'१४',en:'28',s:'sat'}],
+  [{np:'१५',en:'29',s:''},{np:'१६',en:'30',s:''},{np:'१७',en:'31',s:''},{np:'१८',en:'1',s:''},{np:'१९',en:'2',s:''},{np:'२०',en:'3',s:''},{np:'२१',en:'4',s:'sat'}],
+  [{np:'२२',en:'5',s:''},{np:'२३',en:'6',s:''},{np:'२४',en:'7',s:''},{np:'२५',en:'8',s:''},{np:'२६',en:'9',s:''},{np:'२७',en:'10',s:''},{np:'२८',en:'11',s:'sat'}],
+  [{np:'२९',en:'12',s:''},{np:'३०',en:'13',s:''},{np:'',en:'',s:'faded'},{np:'',en:'',s:'faded'},{np:'',en:'',s:'faded'},{np:'',en:'',s:'faded'},{np:'',en:'',s:'faded'}],
 ];
-const grid = document.getElementById('calGrid');
-calRows.forEach(row => row.forEach(d => {
-  const cell = document.createElement('div');
-  // today overrides everything visually; sat/hol/sun just color the number
-  cell.className = 'cd' + (d.s ? ' ' + d.s : '');
-  if (d.n) cell.innerHTML = `<span class="n">${d.n}</span><span class="e">${d.e}</span>`;
-  grid.appendChild(cell);
-}));
+
+// Populate all widget grids on the page
+function populateWidgetGrid(gridId) {
+  const grid = document.getElementById(gridId);
+  if (!grid) return;
+  const isMenuBar = gridId === 'menuBarWidgetGrid';
+  widgetRows.forEach(row => row.forEach(d => {
+    const cell = document.createElement('div');
+    cell.className = 'widget-cell' + (d.s ? ' ' + d.s : '');
+    if (isMenuBar && d.np) {
+      cell.innerHTML = `<span style="font-size: 14px; font-weight: 600;">${d.np}</span><span style="font-size: 9px; color: var(--text3); display: block; margin-top: 2px;">${d.en}</span>`;
+    } else if (d.np) {
+      cell.textContent = d.np;
+    } else if (d.d) {
+      cell.textContent = d.d;
+    }
+    grid.appendChild(cell);
+  }));
+}
+
+// Home page widget
+populateWidgetGrid('widgetGrid');
+// Features page widgets
+populateWidgetGrid('featureWidgetGrid');
+populateWidgetGrid('desktopWidgetGrid');
+populateWidgetGrid('menuBarWidgetGrid');
+
+function toggleView(view) {
+  const todayView = document.getElementById('menubarToday');
+  const calendarView = document.getElementById('menubarCalendar');
+  const toggles = document.querySelectorAll('.view-toggle');
+  
+  if (view === 'today') {
+    todayView.style.display = 'block';
+    calendarView.style.display = 'none';
+    toggles[0].style.background = 'var(--accent)';
+    toggles[0].style.color = '#fff';
+    toggles[1].style.background = 'var(--surface2)';
+    toggles[1].style.color = 'var(--text2)';
+  } else {
+    todayView.style.display = 'none';
+    calendarView.style.display = 'block';
+    toggles[1].style.background = 'var(--accent)';
+    toggles[1].style.color = '#fff';
+    toggles[0].style.background = 'var(--surface2)';
+    toggles[0].style.color = 'var(--text2)';
+  }
+}
 </script>
 </body>
 </html>
