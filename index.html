@@ -2,11 +2,113 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- SEO Meta Tags -->
+<title>BhittePatro — The Clean Nepali Calendar for macOS & iOS</title>
+<meta name="description" content="BhittePatro is a fast, private, ad-free Nepali calendar (पात्रो) for macOS and iOS. View Bikram Sambat dates, tithis, and holidays with a beautiful minimal design.">
+<meta name="keywords" content="Nepali calendar, BhittePatro, पात्रो, Bikram Sambat, Nepali patro, Nepal calendar, macOS calendar, iOS calendar, Nepali tithi, Nepali holidays">
+<meta name="author" content="BhittePatro">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name="application-name" content="BhittePatro">
+<meta name="geo.region" content="NP">
+<meta name="geo.placename" content="Nepal">
+<meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://bhittepatro.com/">
+
+<!-- Hreflang for bilingual -->
+<link rel="alternate" hreflang="en" href="https://bhittepatro.com/">
+<link rel="alternate" hreflang="x-default" href="https://bhittepatro.com/">
+
+<!-- Sitemap -->
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bhittepatro.com/">
+<meta property="og:site_name" content="BhittePatro">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="BhittePatro — The Clean Nepali Calendar for macOS & iOS">
+<meta property="og:description" content="Fast, private, ad-free Nepali calendar. No ads. No noise.">
+<meta property="og:image" content="https://bhittepatro.com/icon-ios-1024x1024.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="1024">
+<meta property="og:image:type" content="image/png">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://bhittepatro.com/">
+<meta name="twitter:title" content="BhittePatro — The Clean Nepali Calendar for macOS & iOS">
+<meta name="twitter:description" content="Fast, private, ad-free Nepali calendar. No ads. No noise.">
+<meta name="twitter:image" content="https://bhittepatro.com/icon-ios-1024x1024.png">
+<meta name="twitter:image:alt" content="BhittePatro — The Clean Nepali Calendar">
+
+<!-- Favicons -->
+<link rel="icon" type="image/png" sizes="1024x1024" href="./icon-ios-1024x1024.png">
 <link rel="icon" type="image/x-icon" href="./icon-ios-1024x1024.png">
-<title>BhittePatro — The Clean Nepali Calendar</title>
+<link rel="apple-touch-icon" sizes="1024x1024" href="./icon-ios-1024x1024.png">
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "BhittePatro",
+      "alternateName": "भित्तेपात्रो",
+      "description": "A fast, private, ad-free Nepali calendar (पात्रो) for macOS and iOS with Bikram Sambat dates, tithis, and holidays.",
+      "url": "https://bhittepatro.com/",
+      "applicationCategory": "CalendarApplication",
+      "operatingSystem": "macOS, iOS",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "screenshot": "https://bhittepatro.com/icon-ios-1024x1024.png",
+      "author": {
+        "@type": "Organization",
+        "name": "BhittePatro",
+        "url": "https://bhittepatro.com/",
+        "sameAs": ["https://github.com/Wizarisan/bhitte-patro"]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "name": "BhittePatro",
+      "alternateName": "भित्तेपात्रो",
+      "url": "https://bhittepatro.com/",
+      "inLanguage": "en"
+    },
+    {
+      "@type": "Organization",
+      "name": "BhittePatro",
+      "url": "https://bhittepatro.com/",
+      "sameAs": ["https://github.com/Wizarisan/bhitte-patro"]
+    }
+  ]
+}
+</script>
+
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.skip-link {
+  position: absolute; top: -100%; left: 50%; transform: translateX(-50%);
+  z-index: 9999; background: var(--blue); color: #fff;
+  padding: 10px 24px; border-radius: 0 0 10px 10px;
+  font-size: 14px; font-weight: 600; text-decoration: none;
+  transition: top 0.15s ease;
+}
+.skip-link:focus { top: 0; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
 
 :root {
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
@@ -626,6 +728,15 @@ footer {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 @media (max-width: 640px) {
   .nav-links { display: none; }
   .nav-right .theme-toggle, .nav-right .nav-cta { display: none; }
@@ -637,6 +748,7 @@ footer {
 </style>
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 <script>
   (function() {
     const saved = localStorage.getItem('theme');
@@ -644,7 +756,7 @@ footer {
   })();
 </script>
 
-<nav>
+<nav aria-label="Main navigation">
   <a class="nav-logo" href="#" onclick="go('home');return false;">
       <div class="logo-sq">ब</div>BhittePatro
   </a>
@@ -685,6 +797,7 @@ footer {
   </div>
 </div>
 
+<main id="main-content">
 <!-- HOME -->
 <div id="page-home" class="page active">
   <section class="hero">
@@ -733,20 +846,21 @@ footer {
 
       <div class="vs-wrap">
         <table class="vs-table">
+          <caption class="sr-only">Comparison between BhittePatro and other Nepali calendar apps</caption>
           <thead>
             <tr>
-              <th>Issue</th>
-              <th>Hamro Patro &amp; Nepali Patro</th>
-              <th>BhittePatro</th>
+              <th scope="col">Issue</th>
+              <th scope="col">Hamro Patro &amp; Nepali Patro</th>
+              <th scope="col">BhittePatro</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>Ads</td><td>Aggressive, full-screen ads throughout the app</td><td>Zero ads. Ever.</td></tr>
-            <tr><td>News Feed</td><td>News articles crammed into what should be a calendar</td><td>Just the calendar. Nothing you did not ask for.</td></tr>
-            <tr><td>Stability</td><td>Ships bugs that go unfixed for weeks</td><td>Open source — report a bug, see it fixed</td></tr>
-            <tr><td>Privacy</td><td>Silent data collection and third-party trackers in the background</td><td>No network calls, no analytics, no telemetry</td></tr>
-            <tr><td>Speed</td><td>Heavy app size, slow launch, bloat you never wanted</td><td>Under 5 MB, opens in under 100 ms</td></tr>
-            <tr><td>Design</td><td>Other patros have a UI from the Windows XP era</td><td>Native macOS design, feels like it belongs</td></tr>
+            <tr><th scope="row">Ads</th><td>Aggressive, full-screen ads throughout the app</td><td>Zero ads. Ever.</td></tr>
+            <tr><th scope="row">News Feed</th><td>News articles crammed into what should be a calendar</td><td>Just the calendar. Nothing you did not ask for.</td></tr>
+            <tr><th scope="row">Stability</th><td>Ships bugs that go unfixed for weeks</td><td>Open source — report a bug, see it fixed</td></tr>
+            <tr><th scope="row">Privacy</th><td>Silent data collection and third-party trackers in the background</td><td>No network calls, no analytics, no telemetry</td></tr>
+            <tr><th scope="row">Speed</th><td>Heavy app size, slow launch, bloat you never wanted</td><td>Under 5 MB, opens in under 100 ms</td></tr>
+            <tr><th scope="row">Design</th><td>Other patros have a UI from the Windows XP era</td><td>Native macOS design, feels like it belongs</td></tr>
           </tbody>
         </table>
       </div>
@@ -754,12 +868,12 @@ footer {
       <p class="sec-label">Why Choose BhittePatro</p>
       <h2 class="sec-title" style="margin-bottom:40px;">Six reasons to switch.</h2>
       <ul class="why-list">
-        <li><span class="why-num">01</span><div><div class="why-t">Instant</div><div class="why-d">Opens in under 100 ms. No splash screen, no loading spinner. Your calendar is just there the moment you click.</div></div></li>
-        <li><span class="why-num">02</span><div><div class="why-t">Zero Ads</div><div class="why-d">Not "fewer ads." Not "premium removes ads." Zero ads in every edition, forever. That is the entire deal.</div></div></li>
-        <li><span class="why-num">03</span><div><div class="why-t">Your Data Stays Yours</div><div class="why-d">No analytics SDK, no ad trackers, no silent background requests. The app does exactly what you can read in the source code.</div></div></li>
-        <li><span class="why-num">04</span><div><div class="why-t">Just the Calendar</div><div class="why-d">Tithi, festivals, public holidays. That is it. No news feed, no horoscope spam, no content you did not open the app for.</div></div></li>
-        <li><span class="why-num">05</span><div><div class="why-t">Reliable Dates</div><div class="why-d">Data sourced and cross-verified. The Online edition syncs live for 100% accuracy. What you see is correct.</div></div></li>
-        <li><span class="why-num">06</span><div><div class="why-t">Open Source</div><div class="why-d">Community maintained. Every line of code is readable. No hidden surprises, no black-box behavior.</div></div></li>
+        <li><span class="why-num">01</span><div><h3 class="why-t">Instant</h3><div class="why-d">Opens in under 100 ms. No splash screen, no loading spinner. Your calendar is just there the moment you click.</div></div></li>
+        <li><span class="why-num">02</span><div><h3 class="why-t">Zero Ads</h3><div class="why-d">Not "fewer ads." Not "premium removes ads." Zero ads in every edition, forever. That is the entire deal.</div></div></li>
+        <li><span class="why-num">03</span><div><h3 class="why-t">Your Data Stays Yours</h3><div class="why-d">No analytics SDK, no ad trackers, no silent background requests. The app does exactly what you can read in the source code.</div></div></li>
+        <li><span class="why-num">04</span><div><h3 class="why-t">Just the Calendar</h3><div class="why-d">Tithi, festivals, public holidays. That is it. No news feed, no horoscope spam, no content you did not open the app for.</div></div></li>
+        <li><span class="why-num">05</span><div><h3 class="why-t">Reliable Dates</h3><div class="why-d">Data sourced and cross-verified. The Online edition syncs live for 100% accuracy. What you see is correct.</div></div></li>
+        <li><span class="why-num">06</span><div><h3 class="why-t">Open Source</h3><div class="why-d">Community maintained. Every line of code is readable. No hidden surprises, no black-box behavior.</div></div></li>
       </ul>
     </div>
   </section>
@@ -773,7 +887,7 @@ footer {
 
   <footer>
     <div class="fc"><strong>BhittePatro</strong> — A clean, open Nepali calendar for macOS<br>Made with care by the community &middot; Free forever</div>
-    <a class="fgh" href="https://github.com/PranabZz/bhitte-patro" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>Contribute on GitHub</a>
+    <a class="fgh" href="https://github.com/PranabZz/bhitte-patro" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>Contribute on GitHub</a>
   </footer>
 </div>
 
@@ -782,7 +896,7 @@ footer {
   <section class="section">
     <div class="wrap">
       <p class="sec-label">Features</p>
-      <h1 class="sec-title">Everything you need.<br>Nothing you don't.</h1>
+      <h2 class="sec-title">Everything you need.<br>Nothing you don't.</h2>
       <p class="sec-sub">Clean design. Powerful features. Zero bloat.</p>
 
       <!-- Menu Bar App Section -->
@@ -908,7 +1022,7 @@ footer {
 
   <footer>
     <div class="fc"><strong>BhittePatro</strong> — A clean, open Nepali calendar for macOS<br>Made with care by the community &middot; Free forever</div>
-    <a class="fgh" href="https://github.com/PranabZz/bhitte-patro" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>Contribute on GitHub</a>
+    <a class="fgh" href="https://github.com/PranabZz/bhitte-patro" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>Contribute on GitHub</a>
   </footer>
 </div>
 
@@ -917,7 +1031,7 @@ footer {
   <section class="section">
     <div class="wrap">
       <p class="sec-label">Download</p>
-      <h1 class="sec-title">Three editions.<br>All free.</h1>
+      <h2 class="sec-title">Three editions.<br>All free.</h2>
       <p class="sec-sub">Start with Basic. Upgrade anytime. No account or sign-in needed.</p>
       <div class="warn-box"><strong>Heads up:</strong>  AI editions will arrive in approximately one week. Basic and Online are available now. If macOS blocks the app, see the <a href="#" onclick="go('troubleshoot');return false;" style="color:var(--blue);text-decoration:none;">Troubleshoot</a> page for a quick fix.</div>
 
@@ -991,7 +1105,7 @@ footer {
   <section class="section">
     <div class="wrap">
       <p class="sec-label">Troubleshooting</p>
-      <h1 class="sec-title">"Apple can't verify<br>this app."</h1>
+      <h2 class="sec-title">"Apple can't verify<br>this app."</h2>
       <p class="sec-sub" style="margin-bottom:36px;">BhittePatro is not on the Mac App Store yet, so macOS blocks it by default. It is a one-time, two-minute fix.</p>
 
       <div class="os-tabs">
@@ -1030,11 +1144,13 @@ footer {
       <div class="help-box">
         <h3>Still stuck?</h3>
         <p>Open a GitHub issue and the community will help. Most issues get a reply within a few hours.</p>
-        <a href="https://github.com" target="_blank" class="btn-dl" style="font-size:15px;padding:11px 26px;">Open a GitHub Issue</a>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn-dl" style="font-size:15px;padding:11px 26px;">Open a GitHub Issue</a>
       </div>
     </div>
   </section>
 </div>
+
+</main>
 
 <script>
 function go(name) {
