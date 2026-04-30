@@ -73,7 +73,7 @@
         "@type": "Organization",
         "name": "BhittePatro",
         "url": "https://bhittepatro.com/",
-        "sameAs": ["https://github.com/Wizartisan/bhitte-patro"]
+        "sameAs": ["https://github.com/vertexnp/bhitte-patro"]
       }
     },
     {
@@ -87,7 +87,7 @@
       "@type": "Organization",
       "name": "BhittePatro",
       "url": "https://bhittepatro.com/",
-      "sameAs": ["https://github.com/Wizartisan/bhitte-patro"]
+      "sameAs": ["https://github.com/vertexnp/bhitte-patro"]
     }
   ]
 }
@@ -139,6 +139,15 @@
   --code-bg:   #e8e8ed;
   --trow:      rgba(0,0,0,0.025);
   --tbdr:      rgba(0,0,0,0.07);
+
+  /* Widget Specific (Light) */
+  --w-bg:      #ffffff;
+  --w-text:    #1d1d1f;
+  --w-text2:   #86868b;
+  --w-nav:     #f0f0f2;
+  --w-border:  rgba(0,0,0,0.1);
+  --w-card:    #f5f5f7;
+  --w-accent:  #ff455f;
 }
 
 [data-theme='dark'] {
@@ -163,6 +172,15 @@
   --code-bg:   #2c2c2e;
   --trow:      rgba(255,255,255,0.025);
   --tbdr:      rgba(255,255,255,0.07);
+
+  /* Widget Specific (Dark) */
+  --w-bg:      #1a1a1c;
+  --w-text:    #ffffff;
+  --w-text2:   #8e8e93;
+  --w-nav:     #2c2c2e;
+  --w-border:  rgba(255,255,255,0.06);
+  --w-card:    #232325;
+  --w-accent:  #ff455f;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -443,14 +461,490 @@ nav {
 
 /* WIDGET - CSS-only Nepali Calendar Widget */
 .widget-container {
+  width: 380px;
+  background: var(--w-bg);
+  border-radius: 28px;
+  border: 1px solid var(--w-border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  position: relative;
+  color: var(--w-text);
+  padding-bottom: 18px;
+  margin: 0 auto;
+}
+
+.widget-header {
+  padding: 20px 18px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.widget-nav-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-circle {
+  width: 38px;
+  height: 38px;
+  background: #2c2c2e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  font-size: 14px;
+}
+
+.widget-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dropdown-label {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.dropdown-label svg {
+  width: 10px;
+  height: 10px;
+  fill: #8e8e93;
+  margin-top: 2px;
+}
+
+.plus-btn {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #d633ff 0%, #ff2d55 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255,45,85,0.4);
+}
+
+.plus-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: #fff;
+}
+
+.widget-body {
+  padding: 0 12px 10px;
+}
+
+.widget-main-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+}
+
+.widget-dl {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #8e8e93;
+  padding: 10px 0;
+}
+
+.widget-dl.sat { color: #ff455f; }
+
+.widget-cell {
+  height: 58px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.widget-cell .n {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.widget-cell .e {
+  font-size: 10px;
+  color: #8e8e93;
+  margin-top: 3px;
+}
+
+.widget-cell.sat .n, .widget-cell.hol .n {
+  color: #ff455f;
+}
+
+.widget-cell.today {
+  background: #ff455f;
+  border-radius: 12px;
+}
+
+.widget-cell.today .n {
+  color: #fff;
+}
+
+.widget-cell.today .e {
+  position: absolute;
+  bottom: 5px;
+  right: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  margin-top: 0;
+}
+
+.widget-cell .note-icon {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 10px;
+  height: 10px;
+  fill: #8e8e93;
+}
+
+.widget-cell.faded { opacity: 0; pointer-events: none; }
+
+.event-card {
+  margin: 6px 10px 0;
+  background: #232325;
+  border-radius: 20px;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.event-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.event-date-small {
+  font-size: 11px;
+  font-weight: 600;
+  color: #8e8e93;
+}
+
+.event-main-text {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #fff;
+}
+
+.event-name-red {
+  color: #ff455f;
+}
+
+.settings-circle {
+  width: 36px;
+  height: 36px;
+  background: #343436;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8e8e93;
+}
+
+/* Horizontal "Today" Desktop Widget */
+.horiz-widget {
+  width: 520px;
+  background: #242426;
+  border-radius: 44px;
+  padding: 40px 44px;
+  display: flex;
+  gap: 48px;
+  color: #fff;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+  text-align: left;
+}
+
+.hw-left {
+  flex: 1.2;
+}
+
+.hw-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #8e8e93;
+  margin-bottom: 16px;
+}
+
+.hw-today-row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.hw-today-num {
+  font-size: 88px;
+  font-weight: 800;
+  color: #ff455f;
+  line-height: 0.9;
+}
+
+.hw-today-day {
+  font-size: 32px;
+  font-weight: 700;
+  color: #8e8e93;
+}
+
+.hw-month-year {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.hw-tithi {
+  font-size: 18px;
+  font-weight: 600;
+  color: #8e8e93;
+}
+
+.hw-divider {
+  width: 1px;
+  background: rgba(255,255,255,0.08);
+}
+
+.hw-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+
+.hw-upcoming-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hw-u-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #8e8e93;
+}
+
+.hw-u-date {
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.hw-u-event {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ff455f;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+/* Theme Mockup Overlays */
+.theme-frosty {
+  background: #1a1c22 !important;
+  color: #fff !important;
+}
+.theme-frosty .widget-month-name, .theme-frosty .widget-month-year, .theme-frosty .widget-cell { color: #fff !important; }
+.theme-frosty .snowflake {
+  position: absolute; color: rgba(255,255,255,0.4); font-size: 14px; pointer-events: none;
+  top: -20px;
+  animation: fall linear infinite;
+}
+
+.theme-green {
+  background: #121814 !important;
+  color: #fff !important;
+}
+.theme-green .widget-month-name, .theme-green .widget-month-year, .theme-green .widget-cell { color: #fff !important; }
+.theme-green .leaf {
+  position: absolute; color: rgba(48, 209, 88, 0.3); font-size: 14px; pointer-events: none;
+  top: -20px;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(400px) rotate(360deg); opacity: 0; }
+}
+
+.theme-accent-pink {
+  background: #ff2d55 !important;
+}
+
+/* AI Assistant Mockup */
+.ai-mockup {
   width: 320px;
+  height: 400px;
   background: var(--surface);
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
-.widget-header {
+.ai-header {
+  padding: 16px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--divider);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ai-avatar {
+  width: 32px;
+  height: 32px;
+  background: var(--blue);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+.ai-info {
+  display: flex;
+  flex-direction: column;
+}
+.ai-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+.ai-status {
+  font-size: 10px;
+  color: var(--green);
+}
+.ai-messages {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+}
+.ai-msg {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.ai-msg.bot {
+  background: var(--surface3);
+  color: var(--text);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+.ai-msg.user {
+  background: var(--blue);
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+.ai-input {
+  padding: 12px 16px;
+  background: var(--surface2);
+  border-top: 1px solid var(--divider);
+  display: flex;
+  gap: 8px;
+}
+.ai-field {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  color: var(--text);
+  font-size: 13px;
+}
+
+/* Note Taker Mockup */
+.note-mockup {
+  width: 320px;
+  height: 400px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+}
+.note-header {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--divider);
+}
+.note-date {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+.note-actions {
+  display: flex;
+  gap: 8px;
+}
+.note-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.note-btn.cancel { background: var(--surface3); color: var(--text); }
+.note-btn.save { background: #ff375f; color: #fff; }
+.note-content {
+  flex: 1;
+  padding: 16px;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.note-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 18px;
+  background: var(--blue);
+  vertical-align: middle;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+  from, to { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.theme-select {
+  padding: 8px 20px; border-radius: 980px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); cursor: pointer;
+  font-size: 13px; font-weight: 600; transition: all var(--t);
+}
+.theme-select:hover { background: var(--surface2); }
+.theme-select.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+.widget-icon {
   padding: 16px 18px 12px;
   display: flex;
   align-items: flex-start;
@@ -461,118 +955,6 @@ nav {
   flex-direction: column;
   gap: 4px;
 }
-.widget-month-name {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: -0.02em;
-}
-.widget-month-year {
-  font-size: 14px;
-  color: var(--text3);
-  font-weight: 500;
-}
-.widget-today-btn {
-  font-size: 11px;
-  font-weight: 700;
-  color: #fff;
-  background: var(--accent);
-  padding: 5px 12px;
-  border-radius: 980px;
-}
-.widget-body {
-  padding: 14px;
-}
-.widget-day-labels {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  margin-bottom: 6px;
-}
-.widget-dl {
-  text-align: center;
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--text3);
-  letter-spacing: 0.04em;
-  padding: 6px 0;
-}
-.widget-dl.sat { color: var(--accent); }
-.widget-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
-}
-.widget-cell {
-  aspect-ratio: 1;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: default;
-  transition: background 0.12s;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text);
-  padding: 2px 0;
-}
-.widget-cell:hover { background: var(--surface2); }
-.widget-cell.today {
-  background: var(--accent);
-  color: #fff;
-}
-.widget-cell.sat, .widget-cell.hol {
-  color: var(--accent);
-}
-.widget-cell.today.sat, .widget-cell.today.hol {
-  color: #fff;
-}
-.widget-cell.faded { opacity: 0.2; }
-.widget-footer {
-  padding: 12px 18px;
-  border-top: 1px solid var(--divider);
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.widget-footer-date {
-  font-size: 11px;
-  color: var(--text3);
-  font-weight: 500;
-}
-.widget-footer-tithi {
-  font-size: 11px;
-  color: var(--text3);
-}
-
-/* Widget Icon - Compact Today View */
-.widget-icon {
-  width: 180px;
-  height: 180px;
-  border-radius: 24px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-.widget-icon-date {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 6px;
-  letter-spacing: -0.02em;
-}
-.widget-icon-tithi {
-  font-size: 13px;
-  color: var(--text3);
-  font-weight: 400;
-}
-
 /* SHARED */
 .wrap { max-width: 900px; margin: 0 auto; padding: 0 24px; }
 .section { padding: 96px 0; }
@@ -824,6 +1206,25 @@ footer {
   .dl-edition { grid-template-columns: 1fr; gap: 10px; }
   .hero h1 { font-size: 40px; }
 }
+
+/* WIDGET THEME OVERRIDES (Light Mode Support) */
+.widget-container { background: var(--w-bg) !important; color: var(--w-text) !important; border-color: var(--w-border) !important; }
+.nav-circle { background: var(--w-nav) !important; color: var(--w-text) !important; }
+.dropdown-label { color: var(--w-text) !important; }
+.dropdown-label svg { fill: var(--w-text2) !important; }
+.widget-dl { color: var(--w-text2) !important; }
+.widget-cell .n { color: var(--w-text) !important; }
+.widget-cell .e { color: var(--w-text2) !important; }
+.widget-cell.today .e { color: #fff !important; }
+.widget-cell .note-icon { fill: var(--w-text2) !important; }
+.event-card { background: var(--w-card) !important; }
+.event-main-text { color: var(--w-text) !important; }
+.event-date-small { color: var(--w-text2) !important; }
+.settings-circle { background: var(--w-nav) !important; color: var(--w-text2) !important; }
+.horiz-widget { background: var(--w-card) !important; color: var(--w-text) !important; }
+.hw-today-day, .hw-tithi, .hw-label, .hw-u-label { color: var(--w-text2) !important; }
+.hw-u-date { color: var(--w-text) !important; }
+.hw-divider { background: var(--divider) !important; }
 </style>
 </head>
 <body>
@@ -845,7 +1246,8 @@ footer {
     <li><a href="#" onclick="go('download');return false;" id="n-download">Download</a></li>
     <li><a href="#" onclick="go('tutorial');return false;" id="n-tutorial">Tutorial</a></li>
     <li><a href="#" onclick="go('troubleshoot');return false;" id="n-troubleshoot">Troubleshoot</a></li>
-    <li><a href="https://github.com/Wizartisan/bhitte-patro" id="n-contribute">Contribute</a></li>
+    <li><a href="#" onclick="go('donate');return false;" id="n-donate">Donate</a></li>
+    <li><a href="https://github.com/vertexnp/bhitte-patro" id="n-contribute">Contribute</a></li>
   </ul>
   <div class="nav-right">
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
@@ -868,7 +1270,8 @@ footer {
   <a href="#" onclick="go('download');toggleMenu();return false;">Download</a>
   <a href="#" onclick="go('tutorial');toggleMenu();return false;">Tutorial</a>
   <a href="#" onclick="go('troubleshoot');toggleMenu();return false;">Troubleshoot</a>
-  <a href="https://github.com/Wizartisan/bhitte-patro" id="m-contribute">Contribute</a>
+  <a href="#" onclick="go('donate');toggleMenu();return false;">Donate</a>
+  <a href="https://github.com/vertexnp/bhitte-patro" id="m-contribute">Contribute</a>
   <div class="theme-row">
     <span>Theme</span>
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
@@ -878,7 +1281,42 @@ footer {
   </div>
 </div>
 
-<main id="main-content">
+<!-- Shared Widget Template -->
+<template id="widgetTemplate">
+  <div class="widget-header">
+    <div class="widget-nav-group">
+      <div class="nav-circle">‹</div>
+      <div class="widget-title-group">
+        <div class="dropdown-label">बैशाख <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
+        <div class="dropdown-label">२०८३ <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
+      </div>
+      <div class="nav-circle">›</div>
+    </div>
+    <div class="plus-btn" title="Ask AI">
+      <svg viewBox="0 0 24 24"><path d="M12,1L13.6,5.3H18.2L14.4,8.1L15.9,12.4L12,9.6L8.1,12.4L9.6,8.1L5.8,5.3H10.4L12,1Z"/></svg>
+    </div>
+  </div>
+  <div class="widget-body">
+    <div class="widget-main-grid">
+      <span class="widget-dl">आइत</span>
+      <span class="widget-dl">सोम</span>
+      <span class="widget-dl">मंगल</span>
+      <span class="widget-dl">बुध</span>
+      <span class="widget-dl">बिही</span>
+      <span class="widget-dl">शुक्र</span>
+      <span class="widget-dl sat">शनि</span>
+    </div>
+  </div>
+  <div class="event-card">
+    <div class="event-info">
+      <span class="event-date-small">बैशाख १७ 30</span>
+      <div class="event-main-text">१ दिन मा <span class="event-name-red">बुद्ध जयन्ती / उँभौली पर्व / विश्व मजदुर दिवस</span></div>
+    </div>
+    <div class="settings-circle">
+      <svg style="width: 20px; height: 20px; fill: currentColor;" viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
+    </div>
+  </div>
+</template>
 <!-- HOME -->
 <div id="page-home" class="page active">
   <section class="hero">
@@ -890,30 +1328,7 @@ footer {
       <a class="btn-ghost" href="#why">Why BhittePatro?</a>
     </div>
     <!-- Calendar Widget -->
-    <div class="widget-container">
-      <div class="widget-header">
-        <div class="widget-month-group">
-          <span class="widget-month-name">चैत</span>
-          <span class="widget-month-year">२०८२</span>
-        </div>
-        <div class="widget-today-btn">आज: ७</div>
-      </div>
-      <div class="widget-body">
-        <div class="widget-day-labels">
-          <span class="widget-dl" style="color: var(--accent);">आइत</span>
-          <span class="widget-dl">सोम</span>
-          <span class="widget-dl">मंगल</span>
-          <span class="widget-dl">बुध</span>
-          <span class="widget-dl">बिही</span>
-          <span class="widget-dl">शुक्र</span>
-          <span class="widget-dl" style="color: var(--accent);">शनि</span>
-        </div>
-        <div class="widget-grid" id="widgetGrid"></div>
-      </div>
-      <div class="widget-footer">
-        <span class="widget-footer-tithi">तृतीया</span>
-      </div>
-    </div>
+    <div class="widget-container" id="mainWidget"></div>
   </section>
 
   <div id="why"></div>
@@ -968,7 +1383,7 @@ footer {
 
   <footer>
     <div class="fc"><strong>BhittePatro</strong> — A clean, open Nepali calendar for macOS<br>Made with care by the community &middot; Free forever</div>
-    <a class="fgh" href="https://github.com/Wizartisan/bhitte-patro" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>Contribute on GitHub</a>
+    <a class="fgh" href="https://github.com/vertexnp/bhitte-patro" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>Contribute on GitHub</a>
   </footer>
 </div>
 
@@ -996,51 +1411,15 @@ footer {
             
             <!-- Today View -->
             <div id="menubarToday" style="padding: 40px 16px; text-align: center;">
-              <div style="font-size: 72px; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 8px;">६</div>
-              <div style="font-size: 15px; color: var(--text3); margin-bottom: 12px;">असोज २०६२</div>
-              <div style="font-size: 13px; color: var(--text2);"><span style="color: var(--accent);">दर्श विदा</span> · अष्टमी</div>
+              <div style="font-size: 72px; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 8px;">१७</div>
+              <div style="font-size: 15px; color: var(--text3); margin-bottom: 12px;">बैशाख २०८३</div>
+              <div style="font-size: 13px; color: var(--text2);"><span style="color: var(--accent);">बुद्ध जयन्ती</span> · पूर्णिमा</div>
             </div>
             
             <!-- Calendar View (hidden by default) -->
             <div id="menubarCalendar" style="display: none;">
-              <!-- Header with Navigation -->
-              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 0 4px;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                  <button style="width: 28px; height: 28px; border-radius: 8px; background: var(--surface2); border: none; color: var(--accent); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center;">‹</button>
-                  <div style="display: flex; align-items: center; gap: 4px;">
-                    <span style="font-size: 14px; font-weight: 600; color: var(--text); cursor: pointer;">असोज</span>
-                    <svg style="width: 12px; height: 12px; fill: var(--text3);" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
-                  </div>
-                  <div style="display: flex; align-items: center; gap: 4px;">
-                    <span style="font-size: 14px; font-weight: 600; color: var(--text); cursor: pointer;">२०६२</span>
-                    <svg style="width: 12px; height: 12px; fill: var(--text3);" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
-                  </div>
-                  <button style="width: 28px; height: 28px; border-radius: 8px; background: var(--surface2); border: none; color: var(--accent); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center;">›</button>
-                </div>
-                <button style="width: 32px; height: 32px; border-radius: 10px; background: var(--surface2); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                  <svg style="width: 18px; height: 18px; fill: var(--text3);" viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
-                </button>
-              </div>
-              
-              <!-- Calendar Grid -->
-              <div class="widget-container" style="width: 300px; border: none; box-shadow: none; background: transparent;">
-                <div class="widget-body" style="padding: 0;">
-                  <div class="widget-day-labels">
-                    <span class="widget-dl" style="color: var(--accent);">आइत</span>
-                    <span class="widget-dl">सोम</span>
-                    <span class="widget-dl">मंगल</span>
-                    <span class="widget-dl">बुध</span>
-                    <span class="widget-dl">बिही</span>
-                    <span class="widget-dl">शुक्र</span>
-                    <span class="widget-dl" style="color: var(--accent);">शनि</span>
-                  </div>
-                  <div class="widget-grid" id="menuBarWidgetGrid" style="grid-template-columns: repeat(7, 1fr); gap: 4px;"></div>
-                </div>
-                <!-- Footer -->
-                <div class="widget-footer" style="padding: 12px 4px 4px; border-top: 1px solid var(--divider); text-align: left; display: flex; flex-direction: column; gap: 4px;">
-                  <span class="widget-footer-date" style="font-size: 11px; color: var(--text3);">असोज ६, २०६२</span>
-                  <span class="widget-footer-tithi" style="font-size: 11px;"><span style="color: var(--accent);">दर्श विदा</span> अष्टमी</span>
-                </div>
+              <!-- Calendar Grid (Template handles the header now) -->
+              <div class="widget-container" id="menuBarWidget" style="width: 330px; border: none; box-shadow: none; background: transparent;">
               </div>
             </div>
           </div>
@@ -1065,35 +1444,126 @@ footer {
 
       <div class="hr" style="margin: 80px auto;"></div>
 
-      <!-- Desktop Widget Feature -->
       <div style="margin: 80px 0; text-align: center;">
-        <h2 style="font-size: 24px; font-weight: 600; color: var(--text); margin-bottom: 12px; letter-spacing: -0.02em;">Desktop Widget</h2>
-        <p style="font-size: 15px; color: var(--text2); margin-bottom: 40px; line-height: 1.6;">Beautiful calendar on your desktop. Always visible, always useful.</p>
+        <h2 style="font-size: 24px; font-weight: 600; color: var(--text); margin-bottom: 12px; letter-spacing: -0.02em;">Desktop Widgets</h2>
+        <p style="font-size: 15px; color: var(--text2); margin-bottom: 40px; line-height: 1.6;">Beautiful, interactive widgets for your desktop. Multiple styles to choose from.</p>
         
-        <div style="display: flex; justify-content: center; margin-top: 40px;">
-          <div class="widget-container" style="width: 320px;">
-            <div class="widget-header">
-              <div class="widget-month-group">
-                <span class="widget-month-name">चैत</span>
-                <span class="widget-month-year">२०८२</span>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 64px; margin-top: 40px;">
+          <!-- Style 1: Horizontal Today/Upcoming -->
+          <div class="horiz-widget">
+            <div class="hw-left" style="text-align: left;">
+              <div class="hw-label">आज</div>
+              <div class="hw-today-row">
+                <span class="hw-today-num">१७</span>
+                <span class="hw-today-day">बिही</span>
               </div>
-              <div class="widget-today-btn">आज: ७</div>
+              <div class="hw-month-year">बैशाख २०८३</div>
+              <div class="hw-tithi">चतुर्दशी</div>
             </div>
-            <div class="widget-body">
-              <div class="widget-day-labels">
-                <span class="widget-dl" style="color: var(--accent);">आइत</span>
-                <span class="widget-dl">सोम</span>
-                <span class="widget-dl">मंगल</span>
-                <span class="widget-dl">बुध</span>
-                <span class="widget-dl">बिही</span>
-                <span class="widget-dl">शुक्र</span>
-                <span class="widget-dl" style="color: var(--accent);">शनि</span>
+            <div class="hw-divider"></div>
+            <div class="hw-right" style="text-align: left;">
+              <div class="hw-upcoming-item">
+                <div class="hw-u-label">भोलि</div>
+                <div class="hw-u-date">बैशाख १८</div>
+                <div class="hw-u-event" title="बुद्ध जयन्ती / उँभौली पर्व / चण्डी">बुद्ध जयन्ती / उँभौली पर्व / च...</div>
               </div>
-              <div class="widget-grid" id="desktopWidgetGrid"></div>
+              <div class="hw-upcoming-item">
+                <div class="hw-u-label">पर्सि</div>
+                <div class="hw-u-date">बैशाख १९</div>
+              </div>
+              <div class="hw-upcoming-item">
+                <div class="hw-u-label">निको पर्सि</div>
+                <div class="hw-u-date">बैशाख २०</div>
+              </div>
             </div>
-            <div class="widget-footer">
-              <span class="widget-footer-date">चैत ७, २०८२</span>
-              <span class="widget-footer-tithi">तृतीया</span>
+          </div>
+
+          <!-- Style 2: Full Monthly Grid -->
+          <div class="widget-container" id="desktopWidget"></div>
+        </div>
+      </div>
+
+      <div class="hr" style="margin: 80px auto;"></div>
+
+      <!-- New Themes Section -->
+      <div style="margin: 80px 0; text-align: center;">
+        <h2 style="font-size: 24px; font-weight: 600; color: var(--text); margin-bottom: 12px; letter-spacing: -0.02em;">Custom Themes</h2>
+        <p style="font-size: 15px; color: var(--text2); margin-bottom: 40px; line-height: 1.6;">Express yourself with beautiful handcrafted themes.</p>
+        
+        <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 32px;">
+          <button class="theme-select active" onclick="setThemeMockup('frosty', this)" style="padding: 8px 20px; border-radius: 980px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; font-size: 13px; font-weight: 600;">Frosty Himalayan</button>
+          <button class="theme-select" onclick="setThemeMockup('green', this)" style="padding: 8px 20px; border-radius: 980px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; font-size: 13px; font-weight: 600;">Nature Green</button>
+        </div>
+
+        <div style="display: flex; justify-content: center;">
+          <div id="themeMockup" class="widget-container theme-frosty"></div>
+        </div>
+      </div>
+
+      <div class="hr" style="margin: 80px auto;"></div>
+
+      <!-- AI Assistant Section -->
+      <div style="margin: 80px 0; text-align: center;">
+        <div style="display: flex; gap: 60px; justify-content: center; align-items: center; flex-wrap: wrap-reverse;">
+          <div class="ai-mockup">
+            <div class="ai-header">
+              <div class="ai-avatar">ब</div>
+              <div class="ai-info" style="text-align: left;">
+                <span class="ai-name">Patro Assistant</span>
+                <span class="ai-status">● सधैं तपाईंको सेवामा</span>
+              </div>
+            </div>
+            <div class="ai-messages">
+              <div class="ai-msg bot">नमस्ते! How can I assist you with the calendar today?</div>
+              <div class="ai-msg user">When is Dashain this year?</div>
+              <div class="ai-msg bot">Dashain starts on Ashwin 24, 2082 (October 10, 2025). The main day, Vijaya Dashami, is on Ashwin 31.</div>
+            </div>
+            <div class="ai-input">
+              <div class="ai-field">Ask about holidays, dates or plans...</div>
+              <div style="width: 30px; height: 30px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff;">↑</div>
+            </div>
+          </div>
+          
+          <div style="max-width: 400px; text-align: left;">
+            <h2 style="font-size: 24px; font-weight: 600; color: var(--text); margin-bottom: 12px; letter-spacing: -0.02em;">AI Assistant</h2>
+            <p style="font-size: 15px; color: var(--text2); margin-bottom: 24px; line-height: 1.6;">Meet your personal Nepali culture expert. Ask anything about festivals, tithis, or auspicious dates.</p>
+            <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px;">
+              <li style="display: flex; gap: 10px; font-size: 14px; color: var(--text2);"><span style="color: var(--green);">✔</span> Explain traditions and rituals</li>
+              <li style="display: flex; gap: 10px; font-size: 14px; color: var(--text2);"><span style="color: var(--green);">✔</span> Smart date conversion & holiday lookups</li>
+              <li style="display: flex; gap: 10px; font-size: 14px; color: var(--text2);"><span style="color: var(--green);">✔</span> AI will assist with your notes as well</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="hr" style="margin: 80px auto;"></div>
+
+      <!-- Smart Note Taker Section -->
+      <div style="margin: 80px 0; text-align: center;">
+        <div style="display: flex; gap: 60px; justify-content: center; align-items: center; flex-wrap: wrap;">
+          <div style="max-width: 400px; text-align: left;">
+            <h2 style="font-size: 24px; font-weight: 600; color: var(--text); margin-bottom: 12px; letter-spacing: -0.02em;">Smart Note Taker</h2>
+            <p style="font-size: 15px; color: var(--text2); margin-bottom: 24px; line-height: 1.6;">Never miss an important event. Attach notes, reminders, and plans directly to any date in the calendar.</p>
+            <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px;">
+              <li style="display: flex; gap: 10px; font-size: 14px; color: var(--text2);"><span style="color: var(--accent);">✦</span> Quick access from any date</li>
+              <li style="display: flex; gap: 10px; font-size: 14px; color: var(--text2);"><span style="color: var(--accent);">✦</span> AI powered suggestions</li>
+            </ul>
+          </div>
+
+          <div class="note-mockup">
+            <div class="note-header">
+              <span class="note-date">वैशाख २३, २०८३</span>
+              <div class="note-actions">
+                <div class="note-btn cancel">Cancel</div>
+                <div class="note-btn save">Save</div>
+              </div>
+            </div>
+            <div class="note-content">
+              Meeting with the team at 2 PM to discuss the new project roadmap.<br><br>
+              Don't forget to bring the printed reports.<span class="note-cursor"></span>
+            </div>
+            <div style="padding: 12px; text-align: right; color: var(--text3); font-size: 11px; font-family: monospace;">
+              64/100
             </div>
           </div>
         </div>
@@ -1103,7 +1573,7 @@ footer {
 
   <footer>
     <div class="fc"><strong>BhittePatro</strong> — A clean, open Nepali calendar for macOS<br>Made with care by the community &middot; Free forever</div>
-    <a class="fgh" href="https://github.com/Wizartisan/bhitte-patro" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>Contribute on GitHub</a>
+    <a class="fgh" href="https://github.com/vertexnp/bhitte-patro" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>Contribute on GitHub</a>
   </footer>
 </div>
 
@@ -1120,7 +1590,7 @@ footer {
           Watch tutorial videos
         </a>
       </div>
-      <div class="warn-box"><strong>Heads up:</strong>  AI editions will arrive in approximately one week. Basic and Online are available now. If macOS blocks the app, see the <a href="#" onclick="go('troubleshoot');return false;" style="color:var(--blue);text-decoration:none;">Troubleshoot</a> page for a quick fix.</div>
+      <div class="warn-box">If macOS blocks the app, see the <a href="#" onclick="go('troubleshoot');return false;" style="color:var(--blue);text-decoration:none;">Troubleshoot</a> page for a quick fix. BhittePatro is open-source and respects your privacy.</div>
 
       <div class="brew-box">
         <div class="brew-header">
@@ -1129,7 +1599,7 @@ footer {
         </div>
         <p class="brew-desc">For macOS power users, you can install the latest version via Homebrew Cask.</p>
         <div class="brew-code-wrap">
-          <code class="brew-code">brew tap Wizartisan/bhitte-patro && brew install --cask bhitte-patro</code>
+          <code class="brew-code">brew tap vertexnp/bhitte-patro && brew install --cask bhitte-patro</code>
           <button class="copy-btn" onclick="copyBrew(this)">Copy</button>
         </div>
       </div>
@@ -1151,7 +1621,7 @@ footer {
               <li>Zero ads, zero tracking</li>
               <li>May miss rare last-minute date corrections</li>
             </ul>
-            <a class="btn-dl" href="https://github.com/Wizartisan/bhitte-patro/releases/tag/1.0.1">Download Basic</a>
+            <a class="btn-dl" href="https://github.com/vertexnp/bhitte-patro/releases/tag/1.0.1">Download Basic</a>
 
           </div>
         </div>
@@ -1171,7 +1641,7 @@ footer {
               <li>Real-time tithi and festival corrections</li>
               <li>Lightweight — no extra background activity</li>
             </ul>
-             <a class="btn-dl" href="https://github.com/Wizartisan/bhitte-patro/releases/tag/1.1.0">Download Online</a>
+             <a class="btn-dl" href="https://github.com/vertexnp/bhitte-patro/releases/tag/1.1.0">Download Online</a>
           </div>
         </div>
 
@@ -1180,18 +1650,17 @@ footer {
             <div class="dl-name">AI</div>
             <div class="dl-type">Ask anything</div>
             <div class="dl-acc">100% <span>+ AI</span></div>
-            <span class="dl-soon">Coming in ~1 week</span>
+            <span class="dl-avail" style="color: var(--blue);">New: Available Now</span>
           </div>
           <div>
-            <div class="dl-desc">Everything in Online, plus a dedicated on-device AI model. Ask questions like "When is Dashain?" or "What does this festival mean?" Requires more disk space; use Basic or Online if storage is limited.</div>
+            <div class="dl-desc">Everything in Online, plus a dedicated on-device AI model and Smart Note Taker. Ask questions about festivals and attach personal notes to any date.</div>
             <ul class="dl-feat">
               <li>Everything in Online</li>
-              <li>Dedicated on-device AI model</li>
-              <li>Ask natural questions about holidays and festivals</li>
-              <li>Explains the meaning and traditions of each holiday</li>
-              <li>Requires more disk space than other editions</li>
+              <li>Patro AI Assistant (On-device model)</li>
+              <li>Smart Note Taker for every date</li>
+              <li>Ask natural questions about holidays</li>
             </ul>
-            <span class="btn-dis">Coming Soon</span>
+            <a class="btn-dl" href="https://github.com/vertexnp/bhitte-patro/releases/tag/2.0.0">Download AI Edition</a>
           </div>
         </div>
       </div>
@@ -1334,6 +1803,27 @@ footer {
   </section>
 </div>
 
+<!-- DONATE -->
+<div id="page-donate" class="page">
+  <section class="section">
+    <div class="wrap" style="text-align: center;">
+      <p class="sec-label">Support Us</p>
+      <h2 class="sec-title">Keep BhittePatro Free.</h2>
+      <p class="sec-sub" style="margin-left: auto; margin-right: auto;">BhittePatro is a community project with zero ads and zero tracking. Your support helps cover server costs and ongoing development.</p>
+
+      <div style="margin-top: 48px; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 48px 32px; max-width: 480px; margin-left: auto; margin-right: auto; box-shadow: var(--shadow);">
+        <div style="font-size: 48px; margin-bottom: 24px;">❤️</div>
+        <h3 style="font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 12px;">Support Development</h3>
+        <p style="font-size: 15px; color: var(--text2); margin-bottom: 32px; line-height: 1.6;">A small $10 donation goes a long way in ensuring the Nepali community has access to a private, fast, and free calendar.</p>
+        
+        <a href="https://verify.stripe.com/start/live_YWNjdF8xU1FTaU8wTnpvRWVoZVpJLF9VUWNjN0VsM1lqU2kxZ0k3aHRlZzNwS2VZbUpIRGpV0100ZtNTTDBh" target="_blank" rel="noopener noreferrer" class="btn-fill" style="font-size: 16px; padding: 14px 40px; display: inline-block;">Donate $10</a>
+        
+        <p style="margin-top: 24px; font-size: 13px; color: var(--text3);">Secure payment via Stripe</p>
+      </div>
+    </div>
+  </section>
+</div>
+
 </main>
 
 <script>
@@ -1377,41 +1867,75 @@ function switchOS(os, el) {
   document.getElementById('steps-tahoe').style.display   = os === 'tahoe'   ? '' : 'none';
 }
 
-// Calendar — Chaitra 2082 starts on Sunday (col 0)
-// Widget Grid - Nepali dates only (matching screenshot design)
-const widgetRows = [
-  [{np:'१',en:'15',s:''},{np:'२',en:'16',s:''},{np:'३',en:'17',s:''},{np:'४',en:'18',s:'hol'},{np:'५',en:'19',s:''},{np:'६',en:'20',s:''},{np:'७',en:'21',s:'today'}],
-  [{np:'८',en:'22',s:''},{np:'९',en:'23',s:''},{np:'१०',en:'24',s:''},{np:'११',en:'25',s:''},{np:'१२',en:'26',s:''},{np:'१३',en:'27',s:'hol'},{np:'१४',en:'28',s:'sat'}],
-  [{np:'१५',en:'29',s:''},{np:'१६',en:'30',s:''},{np:'१७',en:'31',s:''},{np:'१८',en:'1',s:''},{np:'१९',en:'2',s:''},{np:'२०',en:'3',s:''},{np:'२१',en:'4',s:'sat'}],
-  [{np:'२२',en:'5',s:''},{np:'२३',en:'6',s:''},{np:'२४',en:'7',s:''},{np:'२५',en:'8',s:''},{np:'२६',en:'9',s:''},{np:'२७',en:'10',s:''},{np:'२८',en:'11',s:'sat'}],
-  [{np:'२९',en:'12',s:''},{np:'३०',en:'13',s:''},{np:'',en:'',s:'faded'},{np:'',en:'',s:'faded'},{np:'',en:'',s:'faded'},{np:'',en:'',s:'faded'},{np:'',en:'',s:'faded'}],
+// Standard Baishakh 2083 grid matching the reference image
+// 1 = Tuesday
+const standardRows = [
+  [{np:'',en:'',s:'faded'},{np:'',en:'',s:'faded'},{np:'१',en:'14',s:'hol'},{np:'२',en:'15',s:''},{np:'३',en:'16',s:''},{np:'४',en:'17',s:''},{np:'५',en:'18',s:'sat'}],
+  [{np:'६',en:'19',s:''},{np:'७',en:'20',s:''},{np:'८',en:'21',s:'note'},{np:'९',en:'22',s:''},{np:'१०',en:'23',s:''},{np:'११',en:'24',s:''},{np:'१२',en:'25',s:'hol'}],
+  [{np:'१३',en:'26',s:''},{np:'१४',en:'27',s:''},{np:'१५',en:'28',s:''},{np:'१६',en:'29',s:''},{np:'१७',en:'30',s:'today'},{np:'१८',en:'1',s:'hol'},{np:'१९',en:'2',s:'hol'}],
+  [{np:'२०',en:'3',s:''},{np:'२१',en:'4',s:''},{np:'२२',en:'5',s:''},{np:'२३',en:'6',s:''},{np:'२४',en:'7',s:''},{np:'२५',en:'8',s:''},{np:'२६',en:'9',s:'hol'}],
+  [{np:'२७',en:'10',s:''},{np:'२८',en:'11',s:''},{np:'२९',en:'12',s:''},{np:'३०',en:'13',s:''},{np:'३१',en:'14',s:''},{np:'',en:'',s:'faded'},{np:'',en:'',s:'faded'}],
 ];
 
-// Populate all widget grids on the page
-function populateWidgetGrid(gridId) {
-  const grid = document.getElementById(gridId);
-  if (!grid) return;
-  const isMenuBar = gridId === 'menuBarWidgetGrid';
-  widgetRows.forEach(row => row.forEach(d => {
-    const cell = document.createElement('div');
-    cell.className = 'widget-cell' + (d.s ? ' ' + d.s : '');
-    if (isMenuBar && d.np) {
-      cell.innerHTML = `<span style="font-size: 14px; font-weight: 600;">${d.np}</span><span style="font-size: 9px; color: var(--text3); display: block; margin-top: 2px;">${d.en}</span>`;
-    } else if (d.np) {
-      cell.textContent = d.np;
-    } else if (d.d) {
-      cell.textContent = d.d;
-    }
-    grid.appendChild(cell);
-  }));
+initWidgets();
+
+function initWidgets() {
+  const containers = ['mainWidget', 'desktopWidget', 'menuBarWidget', 'themeMockup'];
+  const template = document.getElementById('widgetTemplate');
+
+  containers.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    
+    // Clear and Clone template
+    el.innerHTML = '';
+    el.appendChild(template.content.cloneNode(true));
+    
+    // Populate Grid
+    const grid = el.querySelector('.widget-main-grid');
+    standardRows.forEach(row => row.forEach(d => {
+      const cell = document.createElement('div');
+      cell.className = 'widget-cell' + (d.s ? ' ' + d.s : '');
+      if (d.np) {
+        cell.innerHTML = `<span class="n">${d.np}</span><span class="e">${d.en}</span>`;
+        
+        if (d.s === 'note') {
+          cell.insertAdjacentHTML('beforeend', `<svg class="note-icon" viewBox="0 0 24 24"><path d="M14,2H6C4.9,2 4,2.9 4,4V20C4,21.1 4.9,22 6,22H18C19.1,22 20,21.1 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/></svg>`);
+        }
+      }
+      grid.appendChild(cell);
+    }));
+  });
 }
 
-// Home page widget
-populateWidgetGrid('widgetGrid');
-// Features page widgets
-populateWidgetGrid('featureWidgetGrid');
-populateWidgetGrid('desktopWidgetGrid');
-populateWidgetGrid('menuBarWidgetGrid');
+// Initialize theme mockup with frosty
+setThemeMockup('frosty', document.querySelector('.theme-select.active'));
+
+function setThemeMockup(type, btn) {
+  const mockup = document.getElementById('themeMockup');
+  const buttons = document.querySelectorAll('.theme-select');
+  
+  buttons.forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  
+  mockup.className = 'widget-container ' + (type === 'frosty' ? 'theme-frosty' : 'theme-green');
+  
+  // Update icons (snowflakes vs leaves) with random positions and delays for falling animation
+  const icons = mockup.querySelectorAll('.snowflake, .leaf');
+  icons.forEach(i => i.remove());
+  
+  for (let i = 0; i < 8; i++) {
+    const left = Math.random() * 100;
+    const delay = Math.random() * 5;
+    const duration = 3 + Math.random() * 4;
+    
+    if (type === 'frosty') {
+      mockup.insertAdjacentHTML('afterbegin', `<div class="snowflake" style="left: ${left}%; animation-delay: ${delay}s; animation-duration: ${duration}s;">❄</div>`);
+    } else {
+      mockup.insertAdjacentHTML('afterbegin', `<div class="leaf" style="left: ${left}%; animation-delay: ${delay}s; animation-duration: ${duration}s;">🍃</div>`);
+    }
+  }
+}
 
 function toggleView(view) {
   const todayView = document.getElementById('menubarToday');
