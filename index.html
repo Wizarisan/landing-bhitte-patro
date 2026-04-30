@@ -16,33 +16,29 @@
 <meta name="geo.placename" content="Nepal">
 <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
-<link rel="canonical" href="https://bhittepatro.com/">
 
-<!-- Hreflang for bilingual -->
-<link rel="alternate" hreflang="en" href="https://bhittepatro.com/">
-<link rel="alternate" hreflang="x-default" href="https://bhittepatro.com/">
+
 
 <!-- Sitemap -->
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://bhittepatro.com/">
+
 <meta property="og:site_name" content="BhittePatro">
 <meta property="og:locale" content="en_US">
 <meta property="og:title" content="BhittePatro — The Clean Nepali Calendar for macOS & iOS">
 <meta property="og:description" content="Fast, private, ad-free Nepali calendar. No ads. No noise.">
-<meta property="og:image" content="https://bhittepatro.com/icon-ios-1024x1024.png">
+
 <meta property="og:image:width" content="1024">
 <meta property="og:image:height" content="1024">
 <meta property="og:image:type" content="image/png">
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:url" content="https://bhittepatro.com/">
+
 <meta name="twitter:title" content="BhittePatro — The Clean Nepali Calendar for macOS & iOS">
 <meta name="twitter:description" content="Fast, private, ad-free Nepali calendar. No ads. No noise.">
-<meta name="twitter:image" content="https://bhittepatro.com/icon-ios-1024x1024.png">
 <meta name="twitter:image:alt" content="BhittePatro — The Clean Nepali Calendar">
 
 <!-- Favicons -->
@@ -60,7 +56,7 @@
       "name": "BhittePatro",
       "alternateName": "भित्तेपात्रो",
       "description": "A fast, private, ad-free Nepali calendar (पात्रो) for macOS and iOS with Bikram Sambat dates, tithis, and holidays.",
-      "url": "https://bhittepatro.com/",
+      "url": "https://vertexnp.github.io/landing-bhitte-patro",
       "applicationCategory": "CalendarApplication",
       "operatingSystem": "macOS, iOS",
       "offers": {
@@ -68,11 +64,11 @@
         "price": "0",
         "priceCurrency": "USD"
       },
-      "screenshot": "https://bhittepatro.com/icon-ios-1024x1024.png",
+      "screenshot": "https://vertexnp.github.io/landing-bhitte-patro/icon-ios-1024x1024.png",
       "author": {
         "@type": "Organization",
         "name": "BhittePatro",
-        "url": "https://bhittepatro.com/",
+        "url": "https://vertexnp.github.io/landing-bhitte-patro/",
         "sameAs": ["https://github.com/vertexnp/bhitte-patro"]
       }
     },
@@ -80,13 +76,13 @@
       "@type": "WebSite",
       "name": "BhittePatro",
       "alternateName": "भित्तेपात्रो",
-      "url": "https://bhittepatro.com/",
+      "url": "https://vertexnp.github.io/landing-bhitte-patro/",
       "inLanguage": "en"
     },
     {
       "@type": "Organization",
       "name": "BhittePatro",
-      "url": "https://bhittepatro.com/",
+      "url": "https://vertexnp.github.io/landing-bhitte-patro/",
       "sameAs": ["https://github.com/vertexnp/bhitte-patro"]
     }
   ]
@@ -1960,7 +1956,7 @@ function toggleView(view) {
 }
 
 function copyBrew(btn) {
-  const code = "brew tap Wizartisan/bhitte-patro && brew install --cask bhitte-patro";
+  const code = "brew tap vertexnp/bhitte-patro && brew install --cask bhitte-patro";
   navigator.clipboard.writeText(code).then(() => {
     const originalText = btn.textContent;
     btn.textContent = 'Copied!';
